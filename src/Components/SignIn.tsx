@@ -8,6 +8,7 @@ const SignIn: React.FC = () => {
 
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    
     try {
       await auth.signInWithEmailAndPassword(email, password);
       setEmail("")
@@ -43,8 +44,8 @@ const SignIn: React.FC = () => {
           value={ password } 
           required 
           type="password"/>
-        <input type="submit" value="Submit form"/>
-        <CustomButton type="button" onClick={ signInWithGoogle }>Sign In with google</CustomButton>
+        <CustomButton type="submit">SIGN IN</CustomButton>
+        <CustomButton type="button" onClick={ signInWithGoogle }>SIGN IN WITH GOOGLE</CustomButton>
       </form>
     </div>
   );

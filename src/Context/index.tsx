@@ -8,23 +8,27 @@ export const PersonalContext = createContext<any>({
 });
 
 export const Provider: React.FC<any> = (props) => {
-  const [ greeting ] = useState<string>("Hello amigo");
+  const [ greeting ] = useState<string>("Hello");
   const [ currentUser, setCurrentUser ] = useState<any>(null);
 
   useEffect(() => {
-    auth.onAuthStateChanged(async userAuth => {
+    let unsubscribeFromUserRef: () => void;
+    const unsubscribeFromAuthState = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef: any = await createUserProfileDocument(userAuth);
-
-        userRef.onSnapshot((snapShot: any) => {
+        unsubscribeFromUserRef = userRef.onSnapshot((snapShot: any):void => {
           setCurrentUser({
             id: snapShot.id,
             ...snapShot.data
           })
         })
       }
-      setCurrentUser(userAuth); 
+      setCurrentUser(userAuth);
     })
+    return () => {
+      unsubscribeFromAuthState();
+      unsubscribeFromUserRef();
+    };
   }, []);
 
 
@@ -37,3 +41,4 @@ export const Provider: React.FC<any> = (props) => {
     </PersonalContext.Provider>
   );
 }
+

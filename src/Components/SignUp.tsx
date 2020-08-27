@@ -3,7 +3,7 @@ import CustomButton from './CustomButton';
 import { auth, createUserProfileDocument } from '../firebase/firebase.utils';
 
 
-const SignUp: React.SFC = () => {
+const SignUp: React.FC = () => {
   const [ displayName, setDisplayName ] = useState<string>("");
   const [ email, setEmail ] = useState<string>("");
   const [ password, setPassword ] = useState<string>("");
@@ -20,11 +20,6 @@ const SignUp: React.SFC = () => {
       const { user } = await auth.createUserWithEmailAndPassword(email, password);
       await createUserProfileDocument(user, { displayName });
 
-      setDisplayName("");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-
     } catch (error) {
       console.error(error);
     }
@@ -35,12 +30,11 @@ const SignUp: React.SFC = () => {
     name === "name" ? setDisplayName(value) : 
     name === "email" ? setEmail(value) :
     name === "password" ? setPassword(value) :
-    setConfirmPassword(value)
+    name === "confirmPassword" && setConfirmPassword(value)
   }
 
-
   return (
-    <div>
+    <>
       <h2>Create an account</h2>
       <span>Sign up with you email and password</span>
       <form onSubmit={ handleSubmit }>
@@ -78,7 +72,7 @@ const SignUp: React.SFC = () => {
           type="password"/>
         <CustomButton type="submit">SIGN UP</CustomButton>
       </form>
-    </div>
+    </>
   );
 }
 
