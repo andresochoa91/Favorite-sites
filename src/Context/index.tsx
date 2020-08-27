@@ -19,10 +19,11 @@ export const Provider: React.FC<any> = (props) => {
         unsubscribeFromUserRef = userRef.onSnapshot((snapShot: any):void => {
           setCurrentUser({
             id: snapShot.id,
-            ...snapShot.data
+            ...snapShot.data()
           })
         })
       }
+      // console.log(currentUser)
       setCurrentUser(userAuth);
     })
     return () => {

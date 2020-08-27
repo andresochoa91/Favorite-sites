@@ -4,14 +4,15 @@ import { PersonalContext } from './Context';
 
 interface IContext {
   greeting: string
+  currentUser: any
 }
 
 const App: React.FC = () => {
-  const { greeting } = useContext<IContext>(PersonalContext) 
+  const { greeting, currentUser } = useContext<IContext>(PersonalContext); 
   
-
   return (
     <div className="App">
+      {console.log(currentUser)}
       <Header />
       <h1>{ greeting }</h1>
     </div>

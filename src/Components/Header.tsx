@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import { PersonalContext } from '../Context';
 import { auth } from '../firebase/firebase.utils';
 import SignInSignUp from './SignInSignUp';
+import Edit from './Edit';
+import ForgotPassword from './ForgotPassword'
 
 const Header: React.FC = () => {
   const { currentUser } = useContext(PersonalContext)
@@ -11,10 +13,16 @@ const Header: React.FC = () => {
       {
         currentUser 
         // &&
-        ? 
-        <button onClick={() => auth.signOut()}>Sign out</button> 
+        ?
+        <>
+          <button onClick={() => auth.signOut()}>Sign out</button> 
+          <Edit />
+        </> 
         :
-        <SignInSignUp />
+        <>
+          <SignInSignUp />
+          <ForgotPassword />
+        </>
       }    
     </> 
   );  
