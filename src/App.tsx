@@ -1,22 +1,32 @@
-import React, { useContext } from 'react';
-import Header from './Components/Header';
-import { PersonalContext } from './Context';
+import React, { useContext, SFC } from 'react';
+import { PracticeFirebaseContext } from './Context';
+import SignIn from './Components/SignIn'
+import SignUp from './Components/SignUp'
+import Home from './Components/Home';
+import ForgotPassword from './Components/ForgotPassword';
 
 interface IContext {
-  greeting: string
-  currentUser: any
+  currentUser: {};
 }
 
-const App: React.FC = () => {
-  const { greeting, currentUser } = useContext<IContext>(PersonalContext); 
-  
+const App: SFC = () => {
+  const { currentUser } = useContext<IContext>(PracticeFirebaseContext)
+
   return (
     <div className="App">
-      {console.log(currentUser)}
-      <Header />
-      <h1>{ greeting }</h1>
+      {
+        currentUser 
+        ?
+        <Home />
+        :
+        <>
+          <SignIn />
+          <SignUp />
+          <ForgotPassword />
+        </>
+      }
     </div>
   );
-};
+}
 
 export default App;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {auth} from '../firebase/firebase.utils';
+import { auth } from '../Firebase/Firebase.utils';
 
 
 const ForgotPassword: React.FC = () => {
@@ -7,12 +7,14 @@ const ForgotPassword: React.FC = () => {
   const [ currentEmail, setCurrentEmail ] = useState<string>("");
 
   const handleReset = async(event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    auth.sendPasswordResetEmail(currentEmail)
-    .then((e) => {
-      console.log("yay", e)
-    })
-    .catch(error => console.error(error));
+    try {
+      event.preventDefault();
+      await auth.sendPasswordResetEmail(currentEmail);
+      console.log("yay");
+
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   const handleChange = (event: any) => {
