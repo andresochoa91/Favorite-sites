@@ -7,10 +7,11 @@ import ForgotPassword from './Components/ForgotPassword';
 
 interface IContext {
   currentUser: {};
+  currentImage: string
 }
 
 const App: SFC = () => {
-  const { currentUser } = useContext<IContext>(PracticeFirebaseContext)
+  const { currentUser/* , currentImage */ } = useContext<IContext>(PracticeFirebaseContext)
 
   return (
     <div className="App">
@@ -23,6 +24,7 @@ const App: SFC = () => {
           <SignIn />
           <SignUp />
           <ForgotPassword />
+          {/* <img src={ `${currentImage}` } alt=""/> */}
         </>
       }
     </div>

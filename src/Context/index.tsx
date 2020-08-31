@@ -8,6 +8,7 @@ const Provider: FC = ({ children }) => {
   const [ currentUserName, setCurrentUserName ] = useState<string>("");
   const [ currentUserEmail, setCurrentUserEmail ] = useState<string>("");
   const [ currentUserSites, setCurrentUserSites ] = useState<Array<string>>([]);
+  // const [ currentImage, setCurrentImage ] = useState<string>("")
 
   const createUserDocument = async(userAuth: any, additionalData?: any) => {
     if (!userAuth) return;
@@ -53,7 +54,6 @@ const Provider: FC = ({ children }) => {
         if (currentUser.displayName) {
           createUserDocument(currentUser, { userName: currentUser.displayName });
         }
-        console.log(currentUser)
       } else {
         const { userName, email, sites } = dData;
         setCurrentUserName(userName);
@@ -66,6 +66,19 @@ const Provider: FC = ({ children }) => {
     return () => unmount();
   }, [currentUser]);
 
+  // useEffect(() => {
+  //   let url = "www.facebook.com";
+  //   let apiKey = "fc060f45460f62cf";
+    
+  //   // fetch(`http://api.page2images.com/restfullink?p2i_url=${url}&p2i_key=${apiKey}&p2i_device=6`)
+  //   fetch(`http://api.page2images.com/restfullink?p2i_url=${url}&p2i_key=${apiKey}`)
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     console.log(data);
+  //     setCurrentImage(data.image_url);
+  //   })
+  // }, []) 
+
   return (
     <PracticeFirebaseContext.Provider value={{
       createUserDocument,
@@ -74,7 +87,8 @@ const Provider: FC = ({ children }) => {
       currentUserEmail,
       setCurrentUserName,
       currentUserSites,
-      setCurrentUserSites
+      setCurrentUserSites,
+      // currentImage
     }}>
       { children }
     </PracticeFirebaseContext.Provider>

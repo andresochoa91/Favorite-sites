@@ -62,10 +62,18 @@ const ShowSite: FC<IProps> = ({ index, site, handleDeleteButton }) => {
           </form>
         </>
         :
-        <p>{ site } 
+        <>
+          <a 
+            href={ `${site}` } 
+            target="_blank" 
+            rel="noopener noreferrer"
+          >
+            { site } 
+          </a>
           <button id={ `e${index}` } onClick={ handleEditButton }>Edit</button>
           <button id={ `d${index}` } onClick={ handleDeleteButton }>X</button>
-        </p>
+          <br/>
+        </>
       }
     </>
   );
