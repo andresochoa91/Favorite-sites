@@ -1,12 +1,11 @@
 import React, { useContext, SFC } from 'react';
 import { PracticeFirebaseContext } from './Context';
-import SignIn from './Components/SignIn'
-import SignUp from './Components/SignUp'
 import Home from './Components/Home';
-import ForgotPassword from './Components/ForgotPassword';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import SignForms from './Components/SignForms';
 
 interface IContext {
-  currentUser: {};
+  currentUser: any;
   currentImage: string
 }
 
@@ -14,20 +13,22 @@ const App: SFC = () => {
   const { currentUser/* , currentImage */ } = useContext<IContext>(PracticeFirebaseContext)
 
   return (
-    <div className="App">
+    <>
+      <Switch>
+        <Route exact path="/" component={ SignForms }/>
+        <Route path="/home" component={ Home } />
+      </Switch>
+      
       {
         currentUser 
         ?
-        <Home />
+        <Redirect to={`/home/${currentUser.uid}`} />
         :
-        <>
-          <SignIn />
-          <SignUp />
-          <ForgotPassword />
-          {/* <img src={ `${currentImage}` } alt=""/> */}
-        </>
+        <Redirect to="/" />
       }
-    </div>
+      {console.log(currentUser)}
+      {/* <img src={ `${currentImage}` } alt=""/> */}
+    </>
   );
 }
 
