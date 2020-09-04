@@ -38,8 +38,7 @@ const SignUp: FC = () => {
       if (!form.checkValidity()) {
         event.stopPropagation();
       } else {
-        const { user }: any = await auth.createUserWithEmailAndPassword(email, password);
-        console.log(user);
+        const { user }: firebase.auth.UserCredential = await auth.createUserWithEmailAndPassword(email, password);
         await createUserDocument(user, { userName, zipCode });
       }
     } catch (error) {

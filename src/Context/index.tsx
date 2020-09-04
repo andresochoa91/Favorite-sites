@@ -7,10 +7,10 @@ interface IAdditionalData {
 } 
 
 export interface IContextProps {
-  createUserDocument: (userAuth: firebase.auth.UserCredential, additionalData?: IAdditionalData) => Promise<void>,
+  createUserDocument: (userAuth: firebase.User | null, additionalData?: IAdditionalData) => Promise<void>,
   currentUser: any,
   currentUserName: string,
-  currentUserEmail: string,
+  currentUserEmail: string | null,
   currentUserZipCode: string,
   currentUserSites: Array<string>,
   setCurrentUserZipCode: React.Dispatch<React.SetStateAction<string>>,
@@ -20,16 +20,21 @@ export interface IContextProps {
 
 const PracticeFirebaseContext = createContext({} as IContextProps);
 
+interface ICurrentUser {
+  uid: string;
+  displayName: string | null;
+}
+
+
 const Provider: FC = ({ children }) => {
-  const [ currentUser, setCurrentUser ] = useState<firebase.auth.UserCredential | null>(null);
-  const [ currentFirebaseUser, setCurrentFirebaseUser ] = useState<firebase.User | null>(null);
+  const [ currentUser, setCurrentUser ] = useState<firebase.User | null>(null);
   const [ currentUserName, setCurrentUserName ] = useState<string>("");
-  const [ currentUserEmail, setCurrentUserEmail ] = useState<string>("");
+  const [ currentUserEmail, setCurrentUserEmail ] = useState<string | null>("");
   const [ currentUserSites, setCurrentUserSites ] = useState<Array<string>>([]);
   const [ currentUserZipCode, setCurrentUserZipCode ] = useState<string>("");
   // const [ currentImage, setCurrentImage ] = useState<string>("")
 
-  const createUserDocument = async(userAuth: any, additionalData?: any):Promise<void> => {
+  const createUserDocument = async(userAuth: firebase.User | null, additionalData?: any):Promise<void> => {
     if (!userAuth) return;
 
     const userRef: firebase.firestore.DocumentReference<firebase.firestore.DocumentData> = firestore.doc(`users/${userAuth.uid}`);
@@ -59,7 +64,7 @@ const Provider: FC = ({ children }) => {
   }
 
   useEffect(() => {
-    const unmount = auth.onAuthStateChanged(setCurrentFirebaseUser);
+    const unmount = auth.onAuthStateChanged(setCurrentUser);
     if (!currentUser) {
       setCurrentUserName("");
       setCurrentUserEmail("");
