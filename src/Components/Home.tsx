@@ -1,16 +1,16 @@
 import React, { useContext, SFC } from 'react';
 import { auth } from '../Firebase/Firebase.utils';
-import { PracticeFirebaseContext } from '../Context';
+import { PracticeFirebaseContext, IContextProps } from '../Context';
 import Update from './Update';
 import AddSites from './AddSites';
 
-interface IContext {
-  currentUserName: string;
-  currentUserZipCode: string;
-}
+// interface IContext {
+//   currentUserName: string;
+//   currentUserZipCode: string;
+// }
 
 const Home: SFC = () => {
-  const {  currentUserName, currentUserZipCode } = useContext<IContext>(PracticeFirebaseContext);
+  const {  currentUserName, currentUserZipCode } = useContext<IContextProps>(PracticeFirebaseContext);
 
   return (
     <>

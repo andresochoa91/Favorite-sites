@@ -1,22 +1,13 @@
 import React, { useState, useContext, FC } from 'react';
 import { auth } from '../Firebase/Firebase.utils';
-import { PracticeFirebaseContext } from '../Context';
+import { PracticeFirebaseContext, IContextProps } from '../Context';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
-interface IAdditionalData {
-  userName: string;
-  zipCode: string;
-}
-
-interface IContext {
-  createUserDocument: (userAuth: any, additionalData?: IAdditionalData) => Promise<void>;
-}
-
 const SignUp: FC = () => {
 
-  const { createUserDocument } = useContext<IContext>(PracticeFirebaseContext);
+  const { createUserDocument } = useContext<IContextProps>(PracticeFirebaseContext);
 
   const [ userName, setUserName ] = useState<string>("");
   const [ email, setEmail ] = useState<string>("");
@@ -35,7 +26,7 @@ const SignUp: FC = () => {
     )(value);
   }
 
-  const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async(event: React.FormEvent<HTMLFormElement>):Promise<void> => {
     event.preventDefault();
     setValidated(true);
     // event.stopPropagation();

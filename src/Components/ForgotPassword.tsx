@@ -49,7 +49,7 @@ const ForgotPassword: React.FC = () => {
   //   }
   // };
 
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>):void => {
     setCurrentEmail(event.target.value);
   } 
 

@@ -1,17 +1,17 @@
 import React, { FC, useContext } from 'react';
-import { PracticeFirebaseContext } from '../Context';
+import { PracticeFirebaseContext, IContextProps } from '../Context';
 import { firestore } from '../Firebase/Firebase.utils';
 import ShowSite from './ShowSite';
 
-interface IContext {
-  currentUserSites: Array<string>;
-  setCurrentUserSites: React.Dispatch<React.SetStateAction<string[]>>;
-  currentUser: any
-}
+// interface IContext {
+//   currentUser: any
+//   currentUserSites: Array<string>;
+//   setCurrentUserSites: React.Dispatch<React.SetStateAction<string[]>>;
+// }
 
 const ListSites: FC = () => {
 
-  const { currentUserSites, setCurrentUserSites, currentUser } = useContext<IContext>(PracticeFirebaseContext)  
+  const { currentUserSites, setCurrentUserSites, currentUser } = useContext<IContextProps>(PracticeFirebaseContext);  
 
   const handleDeleteButton = async(event: React.MouseEvent<HTMLButtonElement>):Promise<void> => {
     // console.log(event.currentTarget.id);
@@ -45,7 +45,7 @@ const ListSites: FC = () => {
       {
         currentUserSites.map((site: string, index: number): React.ReactNode => (
           <ShowSite 
-            key={ `b${index}` }
+            key={ `b${site}` }
             index={ index }
             site={ site }
             handleDeleteButton={ handleDeleteButton }

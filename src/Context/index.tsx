@@ -1,20 +1,37 @@
 import React, { createContext, useState, useEffect, FC } from 'react';
 import { auth, firestore } from '../Firebase/Firebase.utils';
 
-const PracticeFirebaseContext = createContext<any>({});
+export interface IContextProps {
+  createUserDocument: (userAuth: any, additionalData?: any) => Promise<void>,
+  currentUser: any,
+  currentUserName: string,
+  currentUserEmail: string,
+  currentUserZipCode: string,
+  currentUserSites: Array<string>,
+  setCurrentUserZipCode: React.Dispatch<React.SetStateAction<string>>,
+  setCurrentUserName: React.Dispatch<React.SetStateAction<string>>,
+  setCurrentUserSites: React.Dispatch<React.SetStateAction<string[]>>
+}
+
+const PracticeFirebaseContext = createContext({} as IContextProps);
+
+interface ICurrentUser {
+  uid: string;
+  displayName: string;
+}
 
 const Provider: FC = ({ children }) => {
-  const [ currentUser, setCurrentUser ] = useState<any>(null);
+  const [ currentUser, setCurrentUser ] = useState<ICurrentUser | null | any>(null);
   const [ currentUserName, setCurrentUserName ] = useState<string>("");
   const [ currentUserEmail, setCurrentUserEmail ] = useState<string>("");
   const [ currentUserSites, setCurrentUserSites ] = useState<Array<string>>([]);
   const [ currentUserZipCode, setCurrentUserZipCode ] = useState<string>("");
   // const [ currentImage, setCurrentImage ] = useState<string>("")
 
-  const createUserDocument = async(userAuth: any, additionalData?: any) => {
+  const createUserDocument = async(userAuth: any, additionalData?: any):Promise<void> => {
     if (!userAuth) return;
 
-    const userRef: any = firestore.doc(`users/${userAuth.uid}`);
+    const userRef: firebase.firestore.DocumentReference<firebase.firestore.DocumentData> = firestore.doc(`users/${userAuth.uid}`);
     const snapshot: any = await userRef.get();
 
     if (!snapshot.exist) {
@@ -42,7 +59,6 @@ const Provider: FC = ({ children }) => {
 
   useEffect(() => {
     const unmount = auth.onAuthStateChanged(setCurrentUser);
-
     if (!currentUser) {
       setCurrentUserName("");
       setCurrentUserEmail("");
@@ -66,7 +82,7 @@ const Provider: FC = ({ children }) => {
         setCurrentUserZipCode(zipCode);
       }
     })
-    .catch((err: any) => console.error(err));
+    .catch((err) => console.error(err));
 
     return () => unmount();
   }, [currentUser]);

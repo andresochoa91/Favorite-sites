@@ -1,4 +1,4 @@
-import React, {SFC} from 'react';
+import React, { SFC } from 'react';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import Row from 'react-bootstrap/Row';

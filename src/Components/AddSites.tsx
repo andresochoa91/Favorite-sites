@@ -1,25 +1,25 @@
 import React, { FC, useState, useContext } from 'react';
 import { firestore } from '../Firebase/Firebase.utils';
-import { PracticeFirebaseContext } from '../Context';
+import { PracticeFirebaseContext, IContextProps } from '../Context';
 import ListSites from './ListSites';
 
 
-interface IContext {
-  currentUser: any;
-  currentUserSites: Array<string>;
-  setCurrentUserSites: React.Dispatch<React.SetStateAction<string[]>>;
-}
+// interface IContext {
+//   currentUser: any;
+//   currentUserSites: Array<string>;
+//   setCurrentUserSites: React.Dispatch<React.SetStateAction<string[]>>;
+// }
 
 const AddSites: FC = () => {
   const [ site, setSite ] = useState<string>("");
-  const { currentUser, currentUserSites, setCurrentUserSites } = useContext<IContext>(PracticeFirebaseContext)
+  const { currentUser, currentUserSites, setCurrentUserSites } = useContext<IContextProps>(PracticeFirebaseContext);
   // const [ currentSites, setCurrentSites ] = useState<Array<string>>(currentUserSites);
 
   const handleInput = (event: React.FormEvent<HTMLInputElement>):void => {
     setSite(event.currentTarget.value);
   }
 
-  const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async(event: React.FormEvent<HTMLFormElement>):Promise<void> => {
     event.preventDefault();
     try {
       const userRef = firestore.doc(`users/${currentUser.uid}`);

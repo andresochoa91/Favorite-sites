@@ -1,6 +1,6 @@
 import React, { FC, useState, useContext } from 'react';
 import { firestore } from '../Firebase/Firebase.utils';
-import { PracticeFirebaseContext } from '../Context';
+import { PracticeFirebaseContext, IContextProps } from '../Context';
 
 interface IProps {
   index: number;
@@ -8,11 +8,11 @@ interface IProps {
   handleDeleteButton: (event: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
 }
 
-interface IContext {
-  currentUser: any;
-  currentUserSites: Array<string>;
-  setCurrentUserSites: React.Dispatch<React.SetStateAction<string[]>>;
-}
+// interface IContext {
+//   currentUser: any;
+//   currentUserSites: Array<string>;
+//   setCurrentUserSites: React.Dispatch<React.SetStateAction<string[]>>;
+// }
 
 const ShowSite: FC<IProps> = ({ index, site, handleDeleteButton }) => {
 
@@ -20,7 +20,7 @@ const ShowSite: FC<IProps> = ({ index, site, handleDeleteButton }) => {
     currentUser,
     setCurrentUserSites,
     currentUserSites
-  } = useContext<IContext>(PracticeFirebaseContext);
+  } = useContext<IContextProps>(PracticeFirebaseContext);
   
   const [ edit, setEdit ] = useState<boolean>(false);
   const [ tempSite, setTempSite ] = useState<string>(site);  
@@ -33,7 +33,7 @@ const ShowSite: FC<IProps> = ({ index, site, handleDeleteButton }) => {
     setTempSite(event.currentTarget.value);
   }
 
-  const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async(event: React.FormEvent<HTMLFormElement>):Promise<void> => {
     event.preventDefault();
     try {
       const tempSites = currentUserSites.map((site: string, ind: number) => (
