@@ -8,12 +8,6 @@ interface IProps {
   handleDeleteButton: (event: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
 }
 
-// interface IContext {
-//   currentUser: any;
-//   currentUserSites: Array<string>;
-//   setCurrentUserSites: React.Dispatch<React.SetStateAction<string[]>>;
-// }
-
 const ShowSite: FC<IProps> = ({ index, site, handleDeleteButton }) => {
 
   const { 

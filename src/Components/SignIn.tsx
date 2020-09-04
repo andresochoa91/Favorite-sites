@@ -16,15 +16,6 @@ const SignIn: FC = () => {
     (name === "email" ? setEmail : setPassword)(value);
   }
 
-  // const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   try {
-  //     await auth.signInWithEmailAndPassword(email, password);
-  //   } catch (error) {
-  //     console.error(error);
-  //   } 
-  // }
-
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>):Promise<void> => {
     event.preventDefault();
     setValidated(true);
@@ -37,34 +28,11 @@ const SignIn: FC = () => {
         await auth.signInWithEmailAndPassword(email, password);
       }
     } catch (error) {
-      console.error(error);
+      alert(error);
     }
   };
 
   return (
-    // <>
-    //   <h1>SignIn</h1>
-    //   <form onSubmit={ handleSubmit }>
-    //     <label htmlFor="email">Email</label>
-    //     <input 
-    //       type="email"
-    //       name="email"
-    //       value={ email }
-    //       onChange={ handleInput }
-    //     />
-    //     <label htmlFor="password">Password</label>
-    //     <input
-    //       type="password"
-    //       name="password"
-    //       value={ password }
-    //       onChange={ handleInput }
-    //     />
-    //     <button type="submit">Sign In</button>
-    //     <button onClick={ signInWithGoogle }>Sign In with google</button>
-    //   </form>
-    //   <ForgotPassword />
-    // </>
-
     <div className="mt-4">
       <h2>Sign In</h2>
       <Form noValidate validated={validated} onSubmit={handleSubmit}>

@@ -13,7 +13,11 @@ const ForgotPassword: React.FC = () => {
 
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    setCurrentEmail("");
+    setValidated(false);
+    setShow(true);
+  }
 
   const handleReset = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -27,27 +31,11 @@ const ForgotPassword: React.FC = () => {
         console.log("Check your email address");
         handleClose();
       }
-    } catch (err) {
+    } catch (error) {
       handleClose();
-      console.error(err);
+      alert(error);
     }
   }
-
-  // const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   setValidated(true);
-  //   // event.stopPropagation();
-  //   try {
-  //     const form = event.currentTarget;
-  //     if (!form.checkValidity()) {
-  //       event.stopPropagation();
-  //     } else {
-  //       await auth.signInWithEmailAndPassword(email, password);
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>):void => {
     setCurrentEmail(event.target.value);
@@ -55,49 +43,39 @@ const ForgotPassword: React.FC = () => {
 
   return (
     <div className="mt-3" style={{cursor: "pointer"}}>
-      <p className="text-primary" onClick={handleShow}>Forgot password?</p>
+      <p className="text-primary" onClick={ handleShow }>Forgot password?</p>
       <>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Forgot Password?</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Forgot Password?</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
 
-          <Form noValidate validated={validated} onSubmit={handleReset}>
-            <Form.Group className="mx-auto" as={Col} md="10" controlId="validationCustom02">
-              <Form.Label>Please anter your email adress</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Email"
-                name="email"
-                defaultValue={ currentEmail }
-                onChange={ handleInput }
-                required
-              />
-              <Form.Control.Feedback type="invalid">
-                Please provide a valid email address.
-              </Form.Control.Feedback>
-              <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-            </Form.Group>
-            <Modal.Footer>
-              <Button type="submit" variant="primary">
-                Reset password
-              </Button>
-            </Modal.Footer>
-          </Form>
-
-          {/* <form onSubmit={ handleReset }>
-            <label htmlFor="">Enter you email</label>
-            <input onChange={ handleChange } type="email"/>
-            <button type="submit">Recover password</button>
-          </form> */}
-        </Modal.Body>
-      </Modal>
-    </>
-
-
-
-
+            <Form noValidate validated={validated} onSubmit={handleReset}>
+              <Form.Group className="mx-auto" as={Col} md="10" controlId="validationCustom02">
+                <Form.Label>Please enter your email adress</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Email"
+                  name="email"
+                  defaultValue={ currentEmail }
+                  onChange={ handleInput }
+                  required
+                />
+                <Form.Control.Feedback type="invalid">
+                  Please provide a valid email address.
+                </Form.Control.Feedback>
+                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+              </Form.Group>
+              <Modal.Footer>
+                <Button type="submit" variant="primary">
+                  Reset password
+                </Button>
+              </Modal.Footer>
+            </Form>
+          </Modal.Body>
+        </Modal>
+      </>
     </div>
   ); 
 }

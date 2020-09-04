@@ -2,14 +2,6 @@ import React, { FC, useContext, useState } from 'react';
 import { PracticeFirebaseContext, IContextProps } from '../Context';
 import { firestore } from '../Firebase/Firebase.utils';
 
-// interface IContext {
-//   currentUser: any;
-//   currentUserName: string;
-//   setCurrentUserName: React.Dispatch<React.SetStateAction<string>>;
-//   currentUserZipCode: string;
-//   setCurrentUserZipCode: React.Dispatch<React.SetStateAction<string>>;
-// }
-
 const Update: FC = () => {
 
   const { 

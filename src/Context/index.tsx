@@ -1,8 +1,13 @@
 import React, { createContext, useState, useEffect, FC } from 'react';
 import { auth, firestore } from '../Firebase/Firebase.utils';
 
+interface IAdditionalData {
+  userName: string | null;
+  zipCode: string | null; 
+} 
+
 export interface IContextProps {
-  createUserDocument: (userAuth: any, additionalData?: any) => Promise<void>,
+  createUserDocument: (userAuth: firebase.auth.UserCredential, additionalData?: IAdditionalData) => Promise<void>,
   currentUser: any,
   currentUserName: string,
   currentUserEmail: string,
@@ -15,13 +20,9 @@ export interface IContextProps {
 
 const PracticeFirebaseContext = createContext({} as IContextProps);
 
-interface ICurrentUser {
-  uid: string;
-  displayName: string;
-}
-
 const Provider: FC = ({ children }) => {
-  const [ currentUser, setCurrentUser ] = useState<ICurrentUser | null | any>(null);
+  const [ currentUser, setCurrentUser ] = useState<firebase.auth.UserCredential | null>(null);
+  const [ currentFirebaseUser, setCurrentFirebaseUser ] = useState<firebase.User | null>(null);
   const [ currentUserName, setCurrentUserName ] = useState<string>("");
   const [ currentUserEmail, setCurrentUserEmail ] = useState<string>("");
   const [ currentUserSites, setCurrentUserSites ] = useState<Array<string>>([]);
@@ -58,7 +59,7 @@ const Provider: FC = ({ children }) => {
   }
 
   useEffect(() => {
-    const unmount = auth.onAuthStateChanged(setCurrentUser);
+    const unmount = auth.onAuthStateChanged(setCurrentFirebaseUser);
     if (!currentUser) {
       setCurrentUserName("");
       setCurrentUserEmail("");
@@ -86,19 +87,6 @@ const Provider: FC = ({ children }) => {
 
     return () => unmount();
   }, [currentUser]);
-
-  // useEffect(() => {
-  //   let url = "www.facebook.com";
-  //   let apiKey = "fc060f45460f62cf";
-    
-  //   // fetch(`http://api.page2images.com/restfullink?p2i_url=${url}&p2i_key=${apiKey}&p2i_device=6`)
-  //   fetch(`http://api.page2images.com/restfullink?p2i_url=${url}&p2i_key=${apiKey}`)
-  //   .then(response => response.json())
-  //   .then(data => {
-  //     console.log(data);
-  //     setCurrentImage(data.image_url);
-  //   })
-  // }, []) 
 
   return (
     <PracticeFirebaseContext.Provider value={{

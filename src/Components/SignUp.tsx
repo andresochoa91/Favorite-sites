@@ -29,17 +29,21 @@ const SignUp: FC = () => {
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>):Promise<void> => {
     event.preventDefault();
     setValidated(true);
-    // event.stopPropagation();
     try {
+      if ( password !== confirmPassword ) {
+        alert("Passwords don't match");
+        return;
+      }
       const form = event.currentTarget;
       if (!form.checkValidity()) {
         event.stopPropagation();
       } else {
         const { user }: any = await auth.createUserWithEmailAndPassword(email, password);
-        await createUserDocument(user, { userName, zipCode })
+        console.log(user);
+        await createUserDocument(user, { userName, zipCode });
       }
     } catch (error) {
-      console.error(error);
+      alert(error);
     }
   };
 
