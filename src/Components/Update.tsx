@@ -2,28 +2,50 @@ import React, { FC, useContext, useState } from 'react';
 import { PracticeFirebaseContext } from '../Context';
 import { firestore } from '../Firebase/Firebase.utils';
 
+interface IContext {
+  currentUser: any;
+  currentUserName: string;
+  setCurrentUserName: React.Dispatch<React.SetStateAction<string>>;
+  currentUserZipCode: string;
+  setCurrentUserZipCode: React.Dispatch<React.SetStateAction<string>>;
+}
+
 const Update: FC = () => {
 
-  const { currentUser, setCurrentUserName } = useContext(PracticeFirebaseContext);
+  const { 
+    currentUser,
+    currentUserName,
+    setCurrentUserName, 
+    currentUserZipCode, 
+    setCurrentUserZipCode 
+  } = useContext<IContext>(PracticeFirebaseContext);
+  
   const [ tempUserName, setTempUserName ] = useState<string>("");
+  const [ tempZipCode, setTempZipCode ] = useState<string>("");
 
   const handleInput = (event: React.FormEvent<HTMLInputElement>):void => {
-    setTempUserName(event.currentTarget.value);
+    const { name, value } = event.currentTarget;
+    (name === "tempUserName" ? setTempUserName(value) : setTempZipCode(value));
   }
 
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     
     const userRef = firestore.doc(`users/${currentUser.uid}`);
+    const updatedUserName = tempUserName ? tempUserName : currentUserName;
+    const updatedZipCode = tempZipCode ? tempZipCode : currentUserZipCode;  
     await userRef.update({
-      userName: tempUserName
+      userName: updatedUserName,
+      zipCode: updatedZipCode
     });
 
     // userRef.get()
     // .then((response: any) => console.log(response.data()))
 
-    setCurrentUserName(tempUserName);
+    setCurrentUserName(updatedUserName);
+    setCurrentUserZipCode(updatedZipCode);
     setTempUserName("");    
+    setTempZipCode("");    
   }
 
   return (
@@ -34,7 +56,15 @@ const Update: FC = () => {
         <input 
           onChange={ handleInput } 
           type="text"
+          name="tempUserName"
           value={ tempUserName }
+        />
+        <label htmlFor="">Update Zip Code</label>
+        <input 
+          onChange={ handleInput } 
+          type="text"
+          name="tempZipCode"
+          value={ tempZipCode }
         />
         <button type="submit">Update</button>
       </form>

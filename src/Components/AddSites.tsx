@@ -3,9 +3,16 @@ import { firestore } from '../Firebase/Firebase.utils';
 import { PracticeFirebaseContext } from '../Context';
 import ListSites from './ListSites';
 
+
+interface IContext {
+  currentUser: any;
+  currentUserSites: Array<string>;
+  setCurrentUserSites: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
 const AddSites: FC = () => {
   const [ site, setSite ] = useState<string>("");
-  const { currentUser, currentUserSites, setCurrentUserSites } = useContext<any>(PracticeFirebaseContext)
+  const { currentUser, currentUserSites, setCurrentUserSites } = useContext<IContext>(PracticeFirebaseContext)
   // const [ currentSites, setCurrentSites ] = useState<Array<string>>(currentUserSites);
 
   const handleInput = (event: React.FormEvent<HTMLInputElement>):void => {

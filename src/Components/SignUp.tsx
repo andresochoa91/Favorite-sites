@@ -1,64 +1,139 @@
 import React, { useState, useContext, FC } from 'react';
 import { auth } from '../Firebase/Firebase.utils';
 import { PracticeFirebaseContext } from '../Context';
+import Form from 'react-bootstrap/Form';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
 
-// interface IContext {
-//   createUserDocument: (userAuth: any, additionalData?: any) => Promise<void>;
-// }
+interface IAdditionalData {
+  userName: string;
+  zipCode: string;
+}
+
+interface IContext {
+  createUserDocument: (userAuth: any, additionalData?: IAdditionalData) => Promise<void>;
+}
 
 const SignUp: FC = () => {
 
-  const { createUserDocument } = useContext<any/* IContext */>(PracticeFirebaseContext);
+  const { createUserDocument } = useContext<IContext>(PracticeFirebaseContext);
 
-  const [ userName, setUserName ] = useState<string>("")
-  const [ email, setEmail ] = useState<string>("")
-  const [ password, setPassword ] = useState<string>("")
+  const [ userName, setUserName ] = useState<string>("");
+  const [ email, setEmail ] = useState<string>("");
+  const [ password, setPassword ] = useState<string>("");
+  const [ confirmPassword, setConfirmPassword ] = useState<string>("");
+  const [ zipCode, setZipCode ] = useState<string>("");
+  const [ validated, setValidated ] = useState<boolean>(false);
 
-  const handleInput = (event: React.FormEvent<HTMLInputElement>):void => {
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>):void => {
     const { name, value } = event.currentTarget;
     ( name === "userName" ? setUserName : 
-      name === "email" ? setEmail : setPassword
+      name === "email" ? setEmail :
+      name === "password" ? setPassword : 
+      name === "confirmPassword" ? setConfirmPassword :
+      setZipCode
     )(value);
   }
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setValidated(true);
+    // event.stopPropagation();
     try {
-      const { user }: any = await auth.createUserWithEmailAndPassword(email, password);
-      await createUserDocument(user, { userName })
+      const form = event.currentTarget;
+      if (!form.checkValidity()) {
+        event.stopPropagation();
+      } else {
+        const { user }: any = await auth.createUserWithEmailAndPassword(email, password);
+        await createUserDocument(user, { userName, zipCode })
+      }
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   return (
-    <>
-      <h1>SignUp</h1>
-      <form onSubmit={ handleSubmit }>
-        <label htmlFor="userName">Username</label>
-        <input 
-          type="text"
-          name="userName"
-          value={ userName }
-          onChange={ handleInput }
-        />
-        <label htmlFor="email">Email</label>
-        <input 
-          type="email"
-          name="email"
-          value={ email }
-          onChange={ handleInput }
-        />
-        <label htmlFor="password">Password</label>
-        <input 
-          type="password"
-          name="password"
-          value={ password }
-          onChange={ handleInput }
-        />
-        <button type="submit">Sign Up</button>
-      </form>
-    </>
+    <div className="mt-4">
+      <h2>Sign Up</h2>
+      <Form noValidate validated={validated} onSubmit={handleSubmit}>
+        <Form.Group className="mx-auto" as={Col} md="10" controlId="validationCustom01">
+          <Form.Label>Username</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Username"
+            name="userName"
+            defaultValue={ userName }
+            onChange={ handleInput }
+            required
+          />
+          <Form.Control.Feedback type="invalid">
+            Please provide a valid username.
+          </Form.Control.Feedback>
+          <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group className="mx-auto" as={Col} md="10" controlId="validationCustom02">
+          <Form.Label>Email</Form.Label>
+          <Form.Control
+            type="email"
+            placeholder="Email"
+            name="email"
+            defaultValue={ email }
+            onChange={ handleInput }
+            required
+          />
+          <Form.Control.Feedback type="invalid">
+            Please provide a valid email address.
+          </Form.Control.Feedback>
+          <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group className="mx-auto" as={Col} md="10" controlId="validationCustom03">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Password"
+            name="password"
+            defaultValue={ password }
+            onChange={ handleInput }
+            required
+          />
+          <Form.Control.Feedback type="invalid">
+            Please provide a valid password.
+          </Form.Control.Feedback>
+          <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group className="mx-auto" as={Col} md="10" controlId="validationCustom04">
+          <Form.Label>Confirm Password</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Confirm Password"
+            name="confirmPassword"
+            defaultValue={ confirmPassword }
+            onChange={ handleInput }
+            required
+          />
+          <Form.Control.Feedback type="invalid">
+            Please provide a valid password.
+          </Form.Control.Feedback>
+          <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group className="mx-auto" as={Col} md="10" controlId="validationCustom04">
+          <Form.Label>Zip code</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Zip code"
+            name="zipCode"
+            defaultValue={ zipCode }
+            onChange={ handleInput }
+            required
+          />
+          <Form.Control.Feedback type="invalid">
+            Please provide a valid zip code.
+          </Form.Control.Feedback>
+          <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+        </Form.Group>
+        <Button className="w-75" type="submit">Register</Button>
+      </Form>
+    </div>
   );
 }
 

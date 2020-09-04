@@ -3,11 +3,17 @@ import { PracticeFirebaseContext } from '../Context';
 import { firestore } from '../Firebase/Firebase.utils';
 import ShowSite from './ShowSite';
 
+interface IContext {
+  currentUserSites: Array<string>;
+  setCurrentUserSites: React.Dispatch<React.SetStateAction<string[]>>;
+  currentUser: any
+}
+
 const ListSites: FC = () => {
 
-  const { currentUserSites, setCurrentUserSites, currentUser } = useContext<any>(PracticeFirebaseContext)  
+  const { currentUserSites, setCurrentUserSites, currentUser } = useContext<IContext>(PracticeFirebaseContext)  
 
-  const handleDeleteButton = async(event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleDeleteButton = async(event: React.MouseEvent<HTMLButtonElement>):Promise<void> => {
     // console.log(event.currentTarget.id);
     try {
       const tempSites = currentUserSites.filter((site: string, index: number) => (

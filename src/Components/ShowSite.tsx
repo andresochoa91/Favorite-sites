@@ -5,12 +5,23 @@ import { PracticeFirebaseContext } from '../Context';
 interface IProps {
   index: number;
   site: string;
-  handleDeleteButton: any;
+  handleDeleteButton: (event: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
+}
+
+interface IContext {
+  currentUser: any;
+  currentUserSites: Array<string>;
+  setCurrentUserSites: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const ShowSite: FC<IProps> = ({ index, site, handleDeleteButton }) => {
 
-  const { currentUser, setCurrentUserSites, currentUserSites } = useContext<any>(PracticeFirebaseContext);
+  const { 
+    currentUser,
+    setCurrentUserSites,
+    currentUserSites
+  } = useContext<IContext>(PracticeFirebaseContext);
+  
   const [ edit, setEdit ] = useState<boolean>(false);
   const [ tempSite, setTempSite ] = useState<string>(site);  
 
@@ -50,7 +61,6 @@ const ShowSite: FC<IProps> = ({ index, site, handleDeleteButton }) => {
       {
         edit 
         ?
-        <>
           <form onSubmit={ handleSubmit }>
             <input 
               type="text"
@@ -60,20 +70,19 @@ const ShowSite: FC<IProps> = ({ index, site, handleDeleteButton }) => {
             <button type="submit">Update</button>
             <button onClick={ handleCancelButton } >Cancel</button>
           </form>
-        </>
         :
-        <>
-          <a 
-            href={ `${site}` } 
-            target="_blank" 
-            rel="noopener noreferrer"
-          >
-            { site } 
-          </a>
-          <button id={ `e${index}` } onClick={ handleEditButton }>Edit</button>
-          <button id={ `d${index}` } onClick={ handleDeleteButton }>X</button>
-          <br/>
-        </>
+          <>
+            <a 
+              href={ `${site}` } 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              { site } 
+            </a>
+            <button id={ `e${index}` } onClick={ handleEditButton }>Edit</button>
+            <button id={ `d${index}` } onClick={ handleDeleteButton }>X</button>
+            <br/>
+          </>
       }
     </>
   );

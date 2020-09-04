@@ -4,8 +4,13 @@ import { PracticeFirebaseContext } from '../Context';
 import Update from './Update';
 import AddSites from './AddSites';
 
+interface IContext {
+  currentUserName: string;
+  currentUserZipCode: string;
+}
+
 const Home: SFC = () => {
-  const {  currentUserName } = useContext(PracticeFirebaseContext);
+  const {  currentUserName, currentUserZipCode } = useContext<IContext>(PracticeFirebaseContext);
 
   return (
     <>
@@ -14,6 +19,7 @@ const Home: SFC = () => {
         <>
           <button onClick={() => auth.signOut()}>Sign out</button>
           <h1>Welcome { currentUserName }</h1>
+          <h2>Zip Code: { currentUserZipCode }</h2>
           <Update />
           <AddSites />
         </>

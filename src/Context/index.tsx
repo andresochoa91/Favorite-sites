@@ -8,6 +8,7 @@ const Provider: FC = ({ children }) => {
   const [ currentUserName, setCurrentUserName ] = useState<string>("");
   const [ currentUserEmail, setCurrentUserEmail ] = useState<string>("");
   const [ currentUserSites, setCurrentUserSites ] = useState<Array<string>>([]);
+  const [ currentUserZipCode, setCurrentUserZipCode ] = useState<string>("");
   // const [ currentImage, setCurrentImage ] = useState<string>("")
 
   const createUserDocument = async(userAuth: any, additionalData?: any) => {
@@ -19,7 +20,7 @@ const Provider: FC = ({ children }) => {
     if (!snapshot.exist) {
       const { email } = userAuth;
       const createdAt = new Date();
-      const { userName } = additionalData;
+      const { userName, zipCode } = additionalData;
 
       try {
         await userRef.set({
@@ -31,6 +32,7 @@ const Provider: FC = ({ children }) => {
         setCurrentUserSites([]);
         setCurrentUserName(userName);
         setCurrentUserEmail(email);
+        setCurrentUserZipCode(zipCode);
 
       } catch (error) {
         console.error(error);
@@ -47,18 +49,21 @@ const Provider: FC = ({ children }) => {
       return () => unmount();
     }
 
-    firestore.collection("users").doc(currentUser.uid).get()
+    const { uid, displayName } = currentUser;
+
+    firestore.collection("users").doc(uid).get()
     .then((doc: any) => {
       let dData = doc.data()
       if (!dData) { 
-        if (currentUser.displayName) {
-          createUserDocument(currentUser, { userName: currentUser.displayName });
+        if (displayName) {
+          createUserDocument(currentUser, { userName: displayName, zipCode: null });
         }
       } else {
-        const { userName, email, sites } = dData;
+        const { userName, email, sites, zipCode } = dData;
         setCurrentUserName(userName);
         setCurrentUserEmail(email);
         setCurrentUserSites(sites);
+        setCurrentUserZipCode(zipCode);
       }
     })
     .catch((err: any) => console.error(err));
@@ -85,6 +90,8 @@ const Provider: FC = ({ children }) => {
       currentUser,
       currentUserName,
       currentUserEmail,
+      currentUserZipCode,
+      setCurrentUserZipCode,
       setCurrentUserName,
       currentUserSites,
       setCurrentUserSites,
