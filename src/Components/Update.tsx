@@ -5,7 +5,7 @@ import { firestore } from '../Firebase/Firebase.utils';
 const Update: FC = () => {
 
   const { 
-    currentUser,
+    currentUserId,
     currentUserName,
     setCurrentUserName, 
     currentUserZipCode, 
@@ -23,7 +23,7 @@ const Update: FC = () => {
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>):Promise<void> => {
     event.preventDefault();
     
-    const userRef = firestore.doc(`users/${currentUser.uid}`);
+    const userRef = firestore.doc(`users/${currentUserId}`);
     const updatedUserName = tempUserName ? tempUserName : currentUserName;
     const updatedZipCode = tempZipCode ? tempZipCode : currentUserZipCode;  
     await userRef.update({

@@ -13,7 +13,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // }
 
 const App: SFC = () => {
-  const { currentUser/* , currentImage */ } = useContext<IContextProps>(PracticeFirebaseContext)
+  const { currentUser, currentUserId/* , currentImage */ } = useContext<IContextProps>(PracticeFirebaseContext)
 
   return (
     <>
@@ -29,7 +29,7 @@ const App: SFC = () => {
       {
         currentUser 
         ?
-          <Redirect to={`/home/${currentUser.uid}`} />
+          <Redirect to={`/home/${currentUserId}`} />
         :
           <Redirect to="/" />
       }

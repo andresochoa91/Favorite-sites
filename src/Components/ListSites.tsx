@@ -5,7 +5,7 @@ import ShowSite from './ShowSite';
 
 const ListSites: FC = () => {
 
-  const { currentUserSites, setCurrentUserSites, currentUser } = useContext<IContextProps>(PracticeFirebaseContext);  
+  const { currentUserSites, setCurrentUserSites, currentUserId } = useContext<IContextProps>(PracticeFirebaseContext);  
 
   const handleDeleteButton = async(event: React.MouseEvent<HTMLButtonElement>):Promise<void> => {
     try {
@@ -13,7 +13,7 @@ const ListSites: FC = () => {
         index !== Number(event.currentTarget.id.split("d")[1])
       ));
   
-      const userRef = firestore.doc(`users/${currentUser.uid}`);
+      const userRef = firestore.doc(`users/${currentUserId}`);
       await userRef.update({
         sites: [...tempSites]
       });

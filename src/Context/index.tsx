@@ -6,10 +6,16 @@ interface IAdditionalData {
   zipCode: string | null; 
 } 
 
+interface ICurrentUser {
+  uid: string;
+  displayName: string | null;
+}
+
 export interface IContextProps {
   createUserDocument: (userAuth: firebase.User | null, additionalData?: IAdditionalData) => Promise<void>,
-  currentUser: any,
+  currentUser: firebase.User | null,
   currentUserName: string,
+  currentUserId: string,
   currentUserEmail: string | null,
   currentUserZipCode: string,
   currentUserSites: Array<string>,
@@ -20,14 +26,9 @@ export interface IContextProps {
 
 const PracticeFirebaseContext = createContext({} as IContextProps);
 
-interface ICurrentUser {
-  uid: string;
-  displayName: string | null;
-}
-
-
 const Provider: FC = ({ children }) => {
   const [ currentUser, setCurrentUser ] = useState<firebase.User | null>(null);
+  const [ currentUserId, setCurrentUserId ] = useState<string>("");
   const [ currentUserName, setCurrentUserName ] = useState<string>("");
   const [ currentUserEmail, setCurrentUserEmail ] = useState<string | null>("");
   const [ currentUserSites, setCurrentUserSites ] = useState<Array<string>>([]);
@@ -41,7 +42,7 @@ const Provider: FC = ({ children }) => {
     const snapshot: any = await userRef.get();
 
     if (!snapshot.exist) {
-      const { email } = userAuth;
+      const { email, uid } = userAuth;
       const createdAt = new Date();
       const { userName, zipCode } = additionalData;
 
@@ -54,6 +55,7 @@ const Provider: FC = ({ children }) => {
         })
         setCurrentUserSites([]);
         setCurrentUserName(userName);
+        setCurrentUserId(uid);
         setCurrentUserEmail(email);
         setCurrentUserZipCode(zipCode);
 
@@ -68,6 +70,7 @@ const Provider: FC = ({ children }) => {
     if (!currentUser) {
       setCurrentUserName("");
       setCurrentUserEmail("");
+      setCurrentUserId("");
       return () => unmount();
     }
 
@@ -83,6 +86,7 @@ const Provider: FC = ({ children }) => {
       } else {
         const { userName, email, sites, zipCode } = dData;
         setCurrentUserName(userName);
+        setCurrentUserId(uid);
         setCurrentUserEmail(email);
         setCurrentUserSites(sites);
         setCurrentUserZipCode(zipCode);
@@ -97,6 +101,7 @@ const Provider: FC = ({ children }) => {
     <PracticeFirebaseContext.Provider value={{
       createUserDocument,
       currentUser,
+      currentUserId,
       currentUserName,
       currentUserEmail,
       currentUserZipCode,

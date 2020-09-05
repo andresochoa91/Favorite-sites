@@ -11,7 +11,7 @@ interface IProps {
 const ShowSite: FC<IProps> = ({ index, site, handleDeleteButton }) => {
 
   const { 
-    currentUser,
+    currentUserId,
     setCurrentUserSites,
     currentUserSites
   } = useContext<IContextProps>(PracticeFirebaseContext);
@@ -34,7 +34,7 @@ const ShowSite: FC<IProps> = ({ index, site, handleDeleteButton }) => {
         ind === index ? tempSite : site
       ));
     
-      const userRef = firestore.doc(`users/${currentUser.uid}`);
+      const userRef = firestore.doc(`users/${currentUserId}`);
       await userRef.update({
         sites: [...tempSites]
       });

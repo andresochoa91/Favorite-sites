@@ -5,7 +5,7 @@ import ListSites from './ListSites';
 
 const AddSites: FC = () => {
   const [ site, setSite ] = useState<string>("");
-  const { currentUser, currentUserSites, setCurrentUserSites } = useContext<IContextProps>(PracticeFirebaseContext);
+  const { currentUserId, currentUserSites, setCurrentUserSites } = useContext<IContextProps>(PracticeFirebaseContext);
 
   const handleInput = (event: React.FormEvent<HTMLInputElement>):void => {
     setSite(event.currentTarget.value);
@@ -14,7 +14,7 @@ const AddSites: FC = () => {
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>):Promise<void> => {
     event.preventDefault();
     try {
-      const userRef = firestore.doc(`users/${currentUser.uid}`);
+      const userRef = firestore.doc(`users/${currentUserId}`);
 
       const something = currentUserSites.filter(s => s !== site);
 
