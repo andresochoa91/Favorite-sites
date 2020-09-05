@@ -2,8 +2,8 @@ import React, { createContext, useState, useEffect, FC } from 'react';
 import { auth, firestore } from '../Firebase/Firebase.utils';
 
 interface IAdditionalData {
-  userName: string | null;
-  zipCode: string | null; 
+  userName: string;
+  zipCode: string; 
 } 
 
 interface ICurrentUser {
@@ -12,7 +12,7 @@ interface ICurrentUser {
 }
 
 export interface IContextProps {
-  createUserDocument: (userAuth: firebase.User | null, additionalData?: IAdditionalData) => Promise<void>,
+  createUserDocument: (userAuth: firebase.User | null, additionalData: IAdditionalData) => Promise<void>,
   currentUser: firebase.User | null,
   currentUserName: string,
   currentUserId: string,
@@ -35,13 +35,13 @@ const Provider: FC = ({ children }) => {
   const [ currentUserZipCode, setCurrentUserZipCode ] = useState<string>("");
   // const [ currentImage, setCurrentImage ] = useState<string>("")
 
-  const createUserDocument = async(userAuth: firebase.User | null, additionalData?: any):Promise<void> => {
+  const createUserDocument = async(userAuth: firebase.User | null, additionalData: IAdditionalData):Promise<void> => {
     if (!userAuth) return;
 
     const userRef: firebase.firestore.DocumentReference<firebase.firestore.DocumentData> = firestore.doc(`users/${userAuth.uid}`);
-    const snapshot: any = await userRef.get();
+    const snapshot: firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData> = await userRef.get()!;
 
-    if (!snapshot.exist) {
+    if (!snapshot.exists) {
       const { email, uid } = userAuth;
       const createdAt = new Date();
       const { userName, zipCode } = additionalData;
@@ -77,11 +77,11 @@ const Provider: FC = ({ children }) => {
     const { uid, displayName } = currentUser;
 
     firestore.collection("users").doc(uid).get()
-    .then((doc: any) => {
+    .then(doc => {
       let dData = doc.data()
       if (!dData) { 
         if (displayName) {
-          createUserDocument(currentUser, { userName: displayName, zipCode: null });
+          createUserDocument(currentUser, { userName: displayName, zipCode: "" });
         }
       } else {
         const { userName, email, sites, zipCode } = dData;
