@@ -1,7 +1,6 @@
 import React, { FC, useState, useContext } from 'react';
 import { firestore } from '../Firebase/Firebase.utils';
 import { PracticeFirebaseContext, IContextProps } from '../Context';
-import ListSites from './ListSites';
 
 const AddSites: FC = () => {
   const [ site, setSite ] = useState<string>("");
@@ -47,7 +46,6 @@ const AddSites: FC = () => {
         />
         <button type="submit">Add website</button>
       </form>
-      <ListSites />
     </>
   );
 }

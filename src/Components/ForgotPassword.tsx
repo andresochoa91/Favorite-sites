@@ -28,7 +28,7 @@ const ForgotPassword: React.FC = () => {
         event.stopPropagation();
       } else {
         await auth.sendPasswordResetEmail(currentEmail);
-        console.log("Check your email address");
+        alert("Check your email address to reset your password!");
         handleClose();
       }
     } catch (error) {
