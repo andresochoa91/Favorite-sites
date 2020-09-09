@@ -11,6 +11,10 @@ interface ICurrentUser {
   displayName: string | null;
 }
 
+interface ICurrentWeather {
+  name: string;
+}
+
 export interface IContextProps {
   createUserDocument: (userAuth: firebase.User | null, additionalData: IAdditionalData) => Promise<void>,
   currentUser: firebase.User | null,
@@ -21,7 +25,8 @@ export interface IContextProps {
   currentUserSites: Array<string>,
   setCurrentUserZipCode: React.Dispatch<React.SetStateAction<string>>,
   setCurrentUserName: React.Dispatch<React.SetStateAction<string>>,
-  setCurrentUserSites: React.Dispatch<React.SetStateAction<string[]>>
+  setCurrentUserSites: React.Dispatch<React.SetStateAction<string[]>>,
+  currentWeather: ICurrentWeather | null;
 }
 
 const PracticeFirebaseContext = createContext({} as IContextProps);
@@ -33,6 +38,7 @@ const Provider: FC = ({ children }) => {
   const [ currentUserEmail, setCurrentUserEmail ] = useState<string | null>("");
   const [ currentUserSites, setCurrentUserSites ] = useState<Array<string>>([]);
   const [ currentUserZipCode, setCurrentUserZipCode ] = useState<string>("");
+  const [ currentWeather, setCurrentWeathers ] = useState(null);
   // const [ currentImage, setCurrentImage ] = useState<string>("")
 
   const createUserDocument = async(userAuth: firebase.User | null, additionalData: IAdditionalData):Promise<void> => {
@@ -71,6 +77,7 @@ const Provider: FC = ({ children }) => {
       setCurrentUserName("");
       setCurrentUserEmail("");
       setCurrentUserId("");
+      setCurrentUserZipCode("");
       return () => unmount();
     }
 
@@ -97,6 +104,18 @@ const Provider: FC = ({ children }) => {
     return () => unmount();
   }, [currentUser]);
 
+  useEffect(() => {
+    const apiKey = "115d1787d75817135c5ddd81a0a676f4";
+    fetch(`https://api.openweathermap.org/data/2.5/weather?zip=${currentUserZipCode},us&appid=${apiKey}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.cod === 200) {
+        setCurrentWeathers(data);
+      } 
+    })
+    .catch(error => console.error(error));
+  }, [ currentUserZipCode, currentUser ])
+
   return (
     <PracticeFirebaseContext.Provider value={{
       createUserDocument,
@@ -109,6 +128,7 @@ const Provider: FC = ({ children }) => {
       setCurrentUserName,
       currentUserSites,
       setCurrentUserSites,
+      currentWeather
       // currentImage
     }}>
       { children }

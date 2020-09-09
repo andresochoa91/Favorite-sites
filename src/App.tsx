@@ -7,13 +7,8 @@ import Jumbotron from 'react-bootstrap/Jumbotron';
 import Container from 'react-bootstrap/Container';
 import "bootstrap/dist/css/bootstrap.min.css";
 
-// interface IContext {
-//   currentUser: any;
-//   currentImage: string
-// }
-
 const App: SFC = () => {
-  const { currentUser, currentUserId/* , currentImage */ } = useContext<IContextProps>(PracticeFirebaseContext)
+  const { currentUser/* , currentImage */ } = useContext<IContextProps>(PracticeFirebaseContext)
 
   return (
     <>
@@ -29,7 +24,7 @@ const App: SFC = () => {
       {
         currentUser 
         ?
-          <Redirect to={`/home/${currentUserId}`} />
+          <Redirect to="/home" />
         :
           <Redirect to="/" />
       }
