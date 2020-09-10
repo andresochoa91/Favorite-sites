@@ -11,8 +11,24 @@ interface ICurrentUser {
   displayName: string | null;
 }
 
+interface IWeatherSpecs {
+  icon: string;
+  description: string;
+}
+
+interface IMainWeather {
+  feels_like: number;
+  humidity: number;
+  pressure: number;
+  temp: number;
+  temp_max: number;
+  temp_min: number;
+}
+
 interface ICurrentWeather {
   name: string;
+  weather: Array<IWeatherSpecs>;
+  main: IMainWeather;
 }
 
 export interface IContextProps {
@@ -106,8 +122,8 @@ const Provider: FC = ({ children }) => {
   }, [currentUser]);
 
   useEffect(() => {
-    const apiKey = "115d1787d75817135c5ddd81a0a676f4";
-    fetch(`https://api.openweathermap.org/data/2.5/weather?zip=${currentUserZipCode},us&appid=${apiKey}`)
+    const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
+    fetch(`https://api.openweathermap.org/data/2.5/weather?zip=${currentUserZipCode},us&appid=${apiKey}&units=imperial`)
     .then(response => response.json())
     .then(data => {
       if (data.cod === 200) {
