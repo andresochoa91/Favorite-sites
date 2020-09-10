@@ -60,6 +60,7 @@ const ShowSite: FC<IProps> = ({ index, site, handleDeleteButton }) => {
               type="text"
               value={ tempSite }
               onChange={ handleEdit }
+              pattern="https?:\/\/.{0,}"
             />
             <button type="submit">Update</button>
             <button onClick={ handleCancelButton } >Cancel</button>

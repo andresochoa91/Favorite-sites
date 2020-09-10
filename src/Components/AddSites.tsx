@@ -43,6 +43,7 @@ const AddSites: FC = () => {
           type="text"
           value={ site }
           onChange={ handleInput }
+          pattern="https?:\/\/.{0,}"
         />
         <button type="submit">Add website</button>
       </form>

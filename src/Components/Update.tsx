@@ -30,33 +30,25 @@ const Update: FC = () => {
       const userRef = firestore.doc(`users/${currentUserId}`);
       const updatedUserName = tempUserName ? tempUserName : currentUserName;
       const updatedZipCode = tempZipCode ? tempZipCode : currentUserZipCode; 
-
-      setCurrentUserName(updatedUserName);
-      setTempUserName("");
-      
-      if (tempZipCode === "") {
-        await userRef.update({
-          userName: updatedUserName,
-        });
-        return;
-      }
-
-      const getApi = await fetch(`https://api.openweathermap.org/data/2.5/weather?zip=${tempZipCode},us&appid=${apiKey}&units=imperial`);
+  
+      const getApi = await fetch(`https://api.openweathermap.org/data/2.5/weather?zip=${updatedZipCode},us&appid=${apiKey}&units=imperial`);
       const getWeather = await getApi.json();
       
-      console.log(getWeather);
       if (getWeather.cod === 200) {
         setCurrentWeather(getWeather);
         await userRef.update({
-          zipCode: updatedZipCode
+          zipCode: updatedZipCode,
+          userName: updatedUserName
         });
         setCurrentUserZipCode(updatedZipCode);
       } else {
-        alert("Your input is incorrect. Enter a valid zip code");
+        alert(`Your input is invalid.\nEnter a valid zip code or leave blank to not update (only if current zip code is already valid)`);
         // setCurrentWeather(null);
         // setCurrentUserZipCode("");
         return;
-      }   
+      }
+      setCurrentUserName(updatedUserName);
+      setTempUserName("");    
       setTempZipCode("");    
     } catch(err) {
       console.error(err);
