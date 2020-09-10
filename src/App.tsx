@@ -12,15 +12,18 @@ const App: SFC = () => {
 
   return (
     <>
-      <Jumbotron className="text-center" fluid>
-        <Container>
-          <Switch>
-            <Route exact path="/" component={ SignForms }/>
-            <Route path="/home" component={ Home } />
-          </Switch>
-        </Container>
-      </Jumbotron>
-      
+      <Switch>
+        <Route exact path="/" render={() => (
+          <div className="d-flex justify-content-center mt-5">
+            <Jumbotron className="text-center p-5" fluid>
+              <Container>
+                <SignForms /> 
+              </Container>
+            </Jumbotron>
+          </div>
+        )}/>
+        <Route path="/home" component={ Home } />
+      </Switch>
       {
         currentUser 
         ?
