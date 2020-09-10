@@ -17,9 +17,8 @@ const Home: SFC = () => {
           <button onClick={() => auth.signOut()}>Sign out</button>
           <h1>Welcome { currentUserName }</h1>
           <h2>Zip Code: { currentUserZipCode }</h2>
-          <Weather />
           <Switch>
-            <Route exact path="/home" />
+            <Route exact path="/home" component={ Weather } />
             <Route path="/home/update" component={ Update } />
             <Route path="/home/sites" component={ Sites } />
           </Switch>

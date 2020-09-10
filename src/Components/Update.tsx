@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useContext, useState, useEffect } from 'react';
 import { PracticeFirebaseContext, IContextProps } from '../Context';
 import { firestore } from '../Firebase/Firebase.utils';
 
@@ -9,7 +9,8 @@ const Update: FC = () => {
     currentUserName,
     setCurrentUserName, 
     currentUserZipCode, 
-    setCurrentUserZipCode 
+    setCurrentUserZipCode,
+    setCurrentWeather,
   } = useContext<IContextProps>(PracticeFirebaseContext);
   
   const [ tempUserName, setTempUserName ] = useState<string>("");
@@ -22,23 +23,46 @@ const Update: FC = () => {
 
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>):Promise<void> => {
     event.preventDefault();
-    
-    const userRef = firestore.doc(`users/${currentUserId}`);
-    const updatedUserName = tempUserName ? tempUserName : currentUserName;
-    const updatedZipCode = tempZipCode ? tempZipCode : currentUserZipCode;  
-    await userRef.update({
-      userName: updatedUserName,
-      zipCode: updatedZipCode
-    });
 
+    try {
+      const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
+  
+      const userRef = firestore.doc(`users/${currentUserId}`);
+      const updatedUserName = tempUserName ? tempUserName : currentUserName;
+      const updatedZipCode = tempZipCode ? tempZipCode : currentUserZipCode; 
+  
+      const getApi = await fetch(`https://api.openweathermap.org/data/2.5/weather?zip=${tempZipCode},us&appid=${apiKey}`);
+      const getWeather = await getApi.json();
+      
+      console.log(getWeather);
+
+      if (getWeather.cod === 200) {
+        setCurrentWeather(getWeather);
+        await userRef.update({
+          userName: updatedUserName,
+          zipCode: updatedZipCode
+        });
+        setCurrentUserZipCode(updatedZipCode);
+      } else {
+        alert("Your input is incorrect. Enter a valid zip code");
+        setCurrentWeather(null);
+        setCurrentUserZipCode("");
+        return;
+      }
+      setCurrentUserName(updatedUserName);
+      setTempUserName("");    
+      setTempZipCode("");    
+    } catch(err) {
+      console.error(err);
+    }
     // userRef.get()
     // .then((response: any) => console.log(response.data()))
-
-    setCurrentUserName(updatedUserName);
-    setCurrentUserZipCode(updatedZipCode);
-    setTempUserName("");    
-    setTempZipCode("");    
   }
+
+  
+  useEffect(() => {
+
+  }, [ currentUserZipCode, setCurrentUserZipCode, setCurrentWeather ]);
 
   return (
     <>

@@ -27,6 +27,7 @@ export interface IContextProps {
   setCurrentUserName: React.Dispatch<React.SetStateAction<string>>,
   setCurrentUserSites: React.Dispatch<React.SetStateAction<string[]>>,
   currentWeather: ICurrentWeather | null;
+  setCurrentWeather: React.Dispatch<React.SetStateAction<ICurrentWeather | null>>;
 }
 
 const PracticeFirebaseContext = createContext({} as IContextProps);
@@ -38,7 +39,7 @@ const Provider: FC = ({ children }) => {
   const [ currentUserEmail, setCurrentUserEmail ] = useState<string | null>("");
   const [ currentUserSites, setCurrentUserSites ] = useState<Array<string>>([]);
   const [ currentUserZipCode, setCurrentUserZipCode ] = useState<string>("");
-  const [ currentWeather, setCurrentWeathers ] = useState(null);
+  const [ currentWeather, setCurrentWeather ] = useState<ICurrentWeather | null>(null);
   // const [ currentImage, setCurrentImage ] = useState<string>("")
 
   const createUserDocument = async(userAuth: firebase.User | null, additionalData: IAdditionalData):Promise<void> => {
@@ -110,11 +111,14 @@ const Provider: FC = ({ children }) => {
     .then(response => response.json())
     .then(data => {
       if (data.cod === 200) {
-        setCurrentWeathers(data);
-      } 
+        setCurrentWeather(data);
+      } else {
+        setCurrentWeather(null);
+        setCurrentUserZipCode("");
+      }
     })
     .catch(error => console.error(error));
-  }, [ currentUserZipCode, currentUser ])
+  }, [ currentUserZipCode ]);
 
   return (
     <PracticeFirebaseContext.Provider value={{
@@ -128,7 +132,8 @@ const Provider: FC = ({ children }) => {
       setCurrentUserName,
       currentUserSites,
       setCurrentUserSites,
-      currentWeather
+      currentWeather,
+      setCurrentWeather
       // currentImage
     }}>
       { children }
