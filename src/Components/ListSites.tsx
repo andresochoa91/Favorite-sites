@@ -28,10 +28,16 @@ const ListSites: FC = () => {
   return (
     <>
       <Container>
-        <Table className="w-50 mx-auto" striped bordered hover>
+        <Table 
+          className="w-75 mx-auto" 
+          striped bordered hover
+          style={{ 
+            backgroundColor: "rgba(0,0,0,0.65)"
+          }}  
+        >
           <thead>
             <tr>
-              <th className="h4 text-center">List of Websites</th>
+              <th className="h4 text-center text-white">List of Websites</th>
             </tr>
           </thead>
           <tbody>

@@ -10,7 +10,13 @@ const SignForms: SFC = () => {
   return (
     <>
       <div className="d-flex justify-content-center mt-5">
-        <Jumbotron className="text-center p-5" fluid>
+        <Jumbotron 
+          className="rounded text-center text-white p-5" 
+          fluid
+          style={{
+            backgroundColor: "rgba(0,0,0,0.65)"
+          }}
+        >
           <Container>
             <h1 className="display-4">Keep track of your favorite websites!</h1>
             <Row>

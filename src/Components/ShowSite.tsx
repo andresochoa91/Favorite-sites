@@ -2,7 +2,6 @@ import React, { FC, useState, useContext } from 'react';
 import { firestore } from '../Firebase/Firebase.utils';
 import { PracticeFirebaseContext, IContextProps } from '../Context';
 import Button from 'react-bootstrap/Button';
-import { kMaxLength } from 'buffer';
 
 interface IProps {
   index: number;

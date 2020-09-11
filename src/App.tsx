@@ -9,7 +9,7 @@ const App: SFC = () => {
   const { currentUser/* , currentImage */ } = useContext<IContextProps>(PracticeFirebaseContext)
 
   return (
-    <>
+    <div>
       <Switch>
         <Route exact path="/" component={ SignForms }/>
         <Route path="/home" component={ Home } />
@@ -22,7 +22,7 @@ const App: SFC = () => {
           <Redirect to="/" />
       }
       {/* <img src={ `${currentImage}` } alt=""/> */}
-    </>
+    </div>
   );
 }
 

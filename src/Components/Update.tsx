@@ -4,6 +4,7 @@ import { firestore } from '../Firebase/Firebase.utils';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
+import Jumbotron from 'react-bootstrap/Jumbotron';
 import { Redirect } from 'react-router-dom';
 
 const Update: FC = () => {
@@ -73,40 +74,48 @@ const Update: FC = () => {
       {
         updating 
         ?
-          <Container className="w-25 my-4">
-            <h3 className="text-center">Update</h3>
-            <Form onSubmit={ handleSubmit }>
-              <Form.Group>
-                <Form.Label>Update name</Form.Label>
-                <Form.Control 
-                  type="text" 
-                  placeholder="Enter new name" 
-                  onChange={ handleInput } 
-                  name="tempUserName"
-                  value={ tempUserName }
-                />
-                <Form.Text className="text-muted">
-                  Leave blank to not change your user name.
-                </Form.Text>
-              </Form.Group>
-    
-              <Form.Group controlId="formBasicPassword">
-                <Form.Label>Update zip code</Form.Label>
-                <Form.Control 
-                  type="text" 
-                  placeholder="Ex: 94000"
-                  onChange={ handleInput } 
-                  name="tempZipCode"
-                  value={ tempZipCode }
-                />
-                <Form.Text className="text-muted">
-                  Leave blank to not change your zip code.
-                </Form.Text>
-              </Form.Group>
-              <Button className="w-100 d-block mx-auto" variant="primary" type="submit">
-                Submit
-              </Button>
-            </Form>
+          <Container 
+            className="w-25 my-5 text-white"
+          >
+            <Jumbotron
+              style={{
+                backgroundColor: "rgba(0,0,0,0.65)"
+              }}
+            >
+              <h3 className="text-center">Update</h3>
+              <Form onSubmit={ handleSubmit }>
+                <Form.Group>
+                  <Form.Label>Update name</Form.Label>
+                  <Form.Control 
+                    type="text" 
+                    placeholder="Enter new name" 
+                    onChange={ handleInput } 
+                    name="tempUserName"
+                    value={ tempUserName }
+                  />
+                  <Form.Text className="text-white">
+                    Leave blank to not change your user name.
+                  </Form.Text>
+                </Form.Group>
+      
+                <Form.Group controlId="formBasicPassword">
+                  <Form.Label>Update zip code</Form.Label>
+                  <Form.Control 
+                    type="text" 
+                    placeholder="Ex: 94000"
+                    onChange={ handleInput } 
+                    name="tempZipCode"
+                    value={ tempZipCode }
+                  />
+                  <Form.Text className="text-white">
+                    Leave blank to not change your zip code.
+                  </Form.Text>
+                </Form.Group>
+                <Button className="w-100 d-block mx-auto" variant="primary" type="submit">
+                  Submit
+                </Button>
+              </Form>
+            </Jumbotron>
           </Container>
         : 
           <Redirect to="/home"/> 

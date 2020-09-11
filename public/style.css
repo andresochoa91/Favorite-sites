@@ -3,3 +3,8 @@
   margin: 0;
   box-sizing: border-box;
 }
+
+body {
+  background: url("./sunset.jpg") center center/cover no-repeat fixed;
+  height: 100vh;
+}

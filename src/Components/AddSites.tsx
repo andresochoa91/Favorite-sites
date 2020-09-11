@@ -42,7 +42,7 @@ const AddSites: FC = () => {
   }
 
   return (
-    <Container className="w-50 my-4">
+    <Container className="w-75 my-4">
       <h3 className="text-center">Add websites</h3>
       <Form onSubmit={ handleSubmit }>
         <InputGroup>
@@ -60,7 +60,7 @@ const AddSites: FC = () => {
             </Button>
           </InputGroup.Append>
         </InputGroup>
-        <Form.Text className="text-muted">
+        <Form.Text className="text-white">
           Starting with <strong>https://</strong> is required
         </Form.Text>
       </Form>
