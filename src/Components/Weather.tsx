@@ -1,8 +1,6 @@
 import React, { SFC, useContext } from 'react';
 import { PracticeFirebaseContext, IContextProps } from '../Context';
 import Card from 'react-bootstrap/Card';
-import ListGroup from 'react-bootstrap/ListGroup';
-import ListGroupItem from 'react-bootstrap/ListGroupItem';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';

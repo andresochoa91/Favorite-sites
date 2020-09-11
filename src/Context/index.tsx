@@ -44,6 +44,8 @@ export interface IContextProps {
   setCurrentUserSites: React.Dispatch<React.SetStateAction<string[]>>,
   currentWeather: ICurrentWeather | null;
   setCurrentWeather: React.Dispatch<React.SetStateAction<ICurrentWeather | null>>;
+  loggedOut: boolean;
+  setLoggedOut: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const PracticeFirebaseContext = createContext({} as IContextProps);
@@ -56,7 +58,7 @@ const Provider: FC = ({ children }) => {
   const [ currentUserSites, setCurrentUserSites ] = useState<Array<string>>([]);
   const [ currentUserZipCode, setCurrentUserZipCode ] = useState<string>("");
   const [ currentWeather, setCurrentWeather ] = useState<ICurrentWeather | null>(null);
-  // const [ currentImage, setCurrentImage ] = useState<string>("")
+  const [ loggedOut, setLoggedOut ] = useState<boolean>(false);
 
   const createUserDocument = async(userAuth: firebase.User | null, additionalData: IAdditionalData):Promise<void> => {
     if (!userAuth) return;
@@ -81,6 +83,7 @@ const Provider: FC = ({ children }) => {
         setCurrentUserId(uid);
         setCurrentUserEmail(email);
         setCurrentUserZipCode(zipCode);
+        setLoggedOut(false);
 
       } catch (error) {
         console.error(error);
@@ -114,6 +117,7 @@ const Provider: FC = ({ children }) => {
         setCurrentUserEmail(email);
         setCurrentUserSites(sites);
         setCurrentUserZipCode(zipCode);
+        setLoggedOut(false);
       }
     })
     .catch((err) => console.error(err));
@@ -149,8 +153,9 @@ const Provider: FC = ({ children }) => {
       currentUserSites,
       setCurrentUserSites,
       currentWeather,
-      setCurrentWeather
-      // currentImage
+      setCurrentWeather,
+      loggedOut,
+      setLoggedOut
     }}>
       { children }
     </PracticeFirebaseContext.Provider>

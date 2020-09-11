@@ -4,31 +4,32 @@ import { auth } from '../Firebase/Firebase.utils';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
-import Update from './Update';
-import Sites from './Sites';
-import { NavLink, Route, Switch } from 'react-router-dom';
-import Weather from './Weather';
+import { NavLink } from 'react-router-dom';
 
 const MainNavbar: SFC = () => {
 
-  const {  currentUserName } = useContext<IContextProps>(PracticeFirebaseContext);
+  const {  currentUserName, setLoggedOut } = useContext<IContextProps>(PracticeFirebaseContext);
+
+  const helper = () => {
+    setLoggedOut(true);
+    auth.signOut();
+  }
 
   return (
     <>
-      <Navbar bg="dark" variant="dark">
-        <NavLink className="text-light h5 mb-0 text-decoration-none" to="/home">{ currentUserName }</NavLink>
-        <Nav className="mr-auto">
-          <NavLink className="mx-4 text-info" to="/home">Home</NavLink>
-          <NavLink className="mr-4 text-info" to="/home/sites">Sites</NavLink>
-          <NavLink className="mr-4 text-info" to="/home/update">Update</NavLink>
-        </Nav>
-        <Button variant="outline-info" onClick={() => auth.signOut()}>Sign out</Button>
-      </Navbar>      
-      <Switch>
-        <Route exact path="/home" component={ Weather } />
-        <Route path="/home/sites" component={ Sites } />
-        <Route path="/home/update" component={ Update } />
-      </Switch>
+      {
+        currentUserName 
+          && 
+        <Navbar bg="dark" variant="dark">
+          <NavLink className="text-light h5 mb-1 text-decoration-none" to="/home">{ currentUserName }</NavLink>
+          <Nav className="mr-auto">
+            <NavLink className="mx-4 text-info" to="/weather">Weather</NavLink>
+            <NavLink className="mr-4 text-info" to="/sites">Sites</NavLink>
+            <NavLink className="mr-4 text-info" to="/update">Update</NavLink>
+          </Nav>
+          <Button variant="outline-info" onClick={ helper }>Sign out</Button>
+        </Navbar>
+      }      
     </>
   );
 }
