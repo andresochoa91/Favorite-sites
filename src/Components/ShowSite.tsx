@@ -1,6 +1,8 @@
 import React, { FC, useState, useContext } from 'react';
 import { firestore } from '../Firebase/Firebase.utils';
 import { PracticeFirebaseContext, IContextProps } from '../Context';
+import Button from 'react-bootstrap/Button';
+import { kMaxLength } from 'buffer';
 
 interface IProps {
   index: number;
@@ -30,6 +32,23 @@ const ShowSite: FC<IProps> = ({ index, site, handleDeleteButton }) => {
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>):Promise<void> => {
     event.preventDefault();
     try {
+      if (!tempSite) {
+        alert("Empty field is not valid");
+        return;
+      }
+
+      let count: number = currentUserSites.reduce((acc: number, site: string, ind: number) => {
+        if (site === tempSite && index !== ind) {
+          return acc + 1;
+        }
+        return acc;
+      }, 0);
+
+      if (count > 0) {
+          alert("This site already exists in your list, try another website")
+          return;
+      }
+
       const tempSites = currentUserSites.map((site: string, ind: number) => (
         ind === index ? tempSite : site
       ));
@@ -55,29 +74,36 @@ const ShowSite: FC<IProps> = ({ index, site, handleDeleteButton }) => {
       {
         edit 
         ?
-          <form onSubmit={ handleSubmit }>
+          <form className="position-relative" onSubmit={ handleSubmit }>
             <input 
               type="text"
               value={ tempSite }
               onChange={ handleEdit }
-              pattern="https?:\/\/.{0,}"
+              pattern="^(https?:\/\/+).{1,}$"
             />
-            <button type="submit">Update</button>
-            <button onClick={ handleCancelButton } >Cancel</button>
+            <span className="position-absolute" style={{top: "-2px", right: "-7px"}}>
+              <Button className="mr-2" type="submit">Update</Button>
+              <Button onClick={ handleCancelButton } >Cancel</Button>
+            </span>
           </form>
         :
-          <>
+          <div 
+            className="position-relative">
             <a 
               href={ `${site}` } 
               target="_blank" 
               rel="noopener noreferrer"
+              className="overflow-auto d-inline-block position-absolute"
+              style={{ width: "80%"}}
             >
               { site } 
             </a>
-            <button id={ `e${index}` } onClick={ handleEditButton }>Edit</button>
-            <button id={ `d${index}` } onClick={ handleDeleteButton }>X</button>
+            <span className="position-absolute" style={{top: "-7px", right: "-7px"}}>
+              <Button className="mr-2" id={ `e${index}` } onClick={ handleEditButton }>Edit</Button>
+              <Button className="btn-danger" id={ `d${index}` } onClick={ handleDeleteButton }>&times;</Button>
+            </span>
             <br/>
-          </>
+          </div>
       }
     </>
   );

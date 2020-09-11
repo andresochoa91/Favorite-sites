@@ -118,6 +118,7 @@ const SignUp: FC = () => {
             name="zipCode"
             defaultValue={ zipCode }
             onChange={ handleInput }
+            pattern="^\d{5}$"
             required
           />
           <Form.Control.Feedback type="invalid">

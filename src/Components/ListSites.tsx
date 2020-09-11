@@ -2,6 +2,8 @@ import React, { FC, useContext } from 'react';
 import { PracticeFirebaseContext, IContextProps } from '../Context';
 import { firestore } from '../Firebase/Firebase.utils';
 import ShowSite from './ShowSite';
+import Table from 'react-bootstrap/Table';
+import Container from 'react-bootstrap/Container';
 
 const ListSites: FC = () => {
 
@@ -25,17 +27,31 @@ const ListSites: FC = () => {
 
   return (
     <>
-      <h1>List of Sites</h1>
-      {
-        currentUserSites.map((site: string, index: number):React.ReactNode => (
-          <ShowSite 
-            key={ `b${site}` }
-            index={ index }
-            site={ site }
-            handleDeleteButton={ handleDeleteButton }
-          />
-        ))
-      }
+      <Container>
+        <Table className="w-50 mx-auto" striped bordered hover>
+          <thead>
+            <tr>
+              <th className="h4 text-center">List of Websites</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          {
+            currentUserSites.map((site: string, index: number):React.ReactNode => (
+              <tr key={ `b${site}` }>
+                <td className="py-3">
+                  <ShowSite 
+                    index={ index }
+                    site={ site }
+                    handleDeleteButton={ handleDeleteButton }
+                  />
+                </td>
+              </tr>
+            ))
+          }
+          </tbody>
+        </Table>
+      </Container>
     </>
   ); 
 }

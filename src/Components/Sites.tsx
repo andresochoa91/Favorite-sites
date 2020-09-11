@@ -5,8 +5,8 @@ import AddSites from './AddSites';
 const Sites: SFC = () => {
   return (
     <>
-      <ListSites />
       <AddSites />
+      <ListSites />
     </>
   );
 }
