@@ -84,7 +84,6 @@ const Provider: FC = ({ children }) => {
         setCurrentUserEmail(email);
         setCurrentUserZipCode(zipCode);
         setLoggedOut(false);
-
       } catch (error) {
         console.error(error);
       }

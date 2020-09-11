@@ -24,7 +24,7 @@ const App: SFC = () => {
             <Route exact path="/weather" component={ Weather } />
             <Route exact path="/sites" component={ Sites } />
             <Route exact path="/update" component={ Update } />
-            {/* <Route path="/:novalid" render={ () => <Redirect to="/" /> } /> */}
+            <Route render={ () => <Redirect to={{pathname: "/"}} /> } />
           </Switch>
         </>
           :
