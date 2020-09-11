@@ -86,8 +86,7 @@ const ShowSite: FC<IProps> = ({ index, site, handleDeleteButton }) => {
             </span>
           </form>
         :
-          <div 
-            className="position-relative">
+          <div className="position-relative">
             <a 
               href={ `${site}` } 
               target="_blank" 

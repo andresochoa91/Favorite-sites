@@ -75,12 +75,13 @@ const Update: FC = () => {
         updating 
         ?
           <Container 
-            className="w-25 my-5 text-white"
+            className="my-5 text-white"
           >
             <Jumbotron
               style={{
                 backgroundColor: "rgba(0,0,0,0.65)"
               }}
+              className="w-50 mx-auto"
             >
               <h3 className="text-center">Update</h3>
               <Form onSubmit={ handleSubmit }>

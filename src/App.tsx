@@ -8,12 +8,22 @@ import { Switch, Route, Redirect} from 'react-router-dom';
 import SignForms from './Components/SignForms';
 import "bootstrap/dist/css/bootstrap.min.css";
 import Weather from './Components/Weather';
+import sunset from './sunset.jpg';
 
 const App: SFC = () => {
   const { currentUser, loggedOut } = useContext<IContextProps>(PracticeFirebaseContext);
 
   return (
-    <>
+    <div
+      style={{
+        backgroundImage: `url(${sunset})`,
+        position: "absolute",
+        minWidth: "100%",
+        minHeight: "100%",
+        backgroundSize: "cover",
+        backgroundPosition: "center"
+      }}
+    >
       {
         currentUser 
           ?
@@ -37,7 +47,7 @@ const App: SFC = () => {
           :  
         <SignForms />
       }
-    </>
+    </div>
   );
 }
 
