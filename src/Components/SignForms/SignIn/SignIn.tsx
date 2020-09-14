@@ -1,6 +1,6 @@
 import React, { useState, FC } from 'react';
-import { auth, signInWithGoogle } from '../Firebase/Firebase.utils';
-import ForgotPassword from './ForgotPassword';
+import { auth, signInWithGoogle } from '../../../Firebase/Firebase.utils';
+import ForgotPassword from '../ForgotPassword/ForgotPassword';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';

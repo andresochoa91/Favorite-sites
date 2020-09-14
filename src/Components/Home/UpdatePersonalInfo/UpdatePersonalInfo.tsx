@@ -1,13 +1,13 @@
-import React, { FC, useContext, useState, useEffect } from 'react';
-import { PracticeFirebaseContext, IContextProps } from '../Context';
-import { firestore } from '../Firebase/Firebase.utils';
+import React, { FC, useContext, useState } from 'react';
+import { PracticeFirebaseContext, IContextProps } from '../../../Context';
+import { firestore } from '../../../Firebase/Firebase.utils';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import { Redirect } from 'react-router-dom';
 
-const Update: FC = () => {
+const UpdatePersonalInfo: FC = () => {
 
   const { 
     currentUserId,
@@ -49,8 +49,6 @@ const Update: FC = () => {
         setCurrentUserZipCode(updatedZipCode);
       } else {
         alert(`Your input is invalid.\nEnter a valid zip code or leave blank to not update (only if current zip code is already valid)`);
-        // setCurrentWeather(null);
-        // setCurrentUserZipCode("");
         return;
       }
       setCurrentUserName(updatedUserName);
@@ -60,14 +58,7 @@ const Update: FC = () => {
     } catch(err) {
       console.error(err);
     }
-    // userRef.get()
-    // .then((response: any) => console.log(response.data()))
   }
-
-  
-  useEffect(() => {
-
-  }, [ currentUserZipCode, setCurrentUserZipCode, setCurrentWeather ]);
 
   return (
     <>
@@ -103,7 +94,7 @@ const Update: FC = () => {
                   <Form.Label>Update zip code</Form.Label>
                   <Form.Control 
                     type="text" 
-                    placeholder="Ex: 94000"
+                    placeholder="Ex: 94555"
                     onChange={ handleInput } 
                     name="tempZipCode"
                     value={ tempZipCode }
@@ -125,4 +116,4 @@ const Update: FC = () => {
   ); 
 }
 
-export default Update;
+export default UpdatePersonalInfo;

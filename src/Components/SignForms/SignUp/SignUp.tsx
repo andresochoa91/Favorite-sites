@@ -1,6 +1,6 @@
 import React, { useState, useContext, FC } from 'react';
-import { auth } from '../Firebase/Firebase.utils';
-import { PracticeFirebaseContext, IContextProps } from '../Context';
+import { auth } from '../../../Firebase/Firebase.utils';
+import { PracticeFirebaseContext, IContextProps } from '../../../Context';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';

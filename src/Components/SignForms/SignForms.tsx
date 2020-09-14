@@ -1,6 +1,6 @@
 import React, { SFC } from 'react';
-import SignIn from './SignIn';
-import SignUp from './SignUp';
+import SignIn from './SignIn/SignIn';
+import SignUp from './SignUp/SignUp';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Jumbotron from 'react-bootstrap/Jumbotron';

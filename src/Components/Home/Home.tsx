@@ -1,6 +1,6 @@
 import React, { useContext, SFC } from 'react';
-import { PracticeFirebaseContext, IContextProps } from '../Context';
-import MainNavbar from './MainNavbar';
+import { PracticeFirebaseContext, IContextProps } from '../../Context';
+import MainNavbar from './MainNavbar/MainNavbar';
 
 const Home: SFC = () => {
   const {  currentUserName } = useContext<IContextProps>(PracticeFirebaseContext);

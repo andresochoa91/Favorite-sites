@@ -1,5 +1,5 @@
 import React, { SFC, useContext } from 'react';
-import { PracticeFirebaseContext, IContextProps } from '../Context';
+import { PracticeFirebaseContext, IContextProps } from '../../../Context';
 import Card from 'react-bootstrap/Card';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Container from 'react-bootstrap/Container';

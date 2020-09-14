@@ -1,11 +1,11 @@
 import React, { SFC, useContext } from 'react';
-import { PracticeFirebaseContext, IContextProps } from '../Context';
-import { auth } from '../Firebase/Firebase.utils';
+import { PracticeFirebaseContext, IContextProps } from '../../../Context';
+import { auth } from '../../../Firebase/Firebase.utils';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
 import { NavLink } from 'react-router-dom';
-import "../App.css";
+import "../../../App.css";
 
 const MainNavbar: SFC = () => {
 

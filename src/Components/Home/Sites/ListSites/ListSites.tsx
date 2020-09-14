@@ -1,7 +1,7 @@
 import React, { FC, useContext } from 'react';
-import { PracticeFirebaseContext, IContextProps } from '../Context';
-import { firestore } from '../Firebase/Firebase.utils';
-import ShowSite from './ShowSite';
+import { PracticeFirebaseContext, IContextProps } from '../../../../Context';
+import { firestore } from '../../../../Firebase/Firebase.utils';
+import ShowSite from '../ShowSite/ShowSite';
 import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
 
