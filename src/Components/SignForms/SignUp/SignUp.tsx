@@ -4,10 +4,17 @@ import { PracticeFirebaseContext, IContextProps } from '../../../Context';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import MainModal from '../../MainModal/MainModal';
 
 const SignUp: FC = () => {
 
-  const { createUserDocument } = useContext<IContextProps>(PracticeFirebaseContext);
+  const { 
+    createUserDocument,
+    currentMessage,
+    setCurrentMessage,
+    currentMessageValidation,
+    setCurrentMessageValidation 
+  } = useContext<IContextProps>(PracticeFirebaseContext);
 
   const [ userName, setUserName ] = useState<string>("");
   const [ email, setEmail ] = useState<string>("");
@@ -31,7 +38,9 @@ const SignUp: FC = () => {
     setValidated(true);
     try {
       if ( password !== confirmPassword ) {
-        alert("Passwords don't match");
+        setCurrentMessage("Passwords don't match")
+        setCurrentMessageValidation(true);
+        // alert("Passwords don't match");
         return;
       }
       const form = event.currentTarget;
@@ -42,12 +51,23 @@ const SignUp: FC = () => {
         await createUserDocument(user, { userName, zipCode });
       }
     } catch (error) {
-      alert(error);
+      setCurrentMessage(error.message)
+      setCurrentMessageValidation(true);
+      // alert(error);
     }
   };
 
   return (
     <div className="mt-4">
+
+      <MainModal
+        currentMessageValidation={ currentMessageValidation }
+        setCurrentMessageValidation={ setCurrentMessageValidation }
+        titleMessage="Error signing up"
+      >
+        <p>{ currentMessage }</p>
+      </MainModal>
+
       <h2>Sign Up</h2>
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Form.Group className="mx-auto" as={Col} md="10" controlId="validationCustom01">

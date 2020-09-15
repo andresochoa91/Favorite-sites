@@ -6,11 +6,6 @@ interface IAdditionalData {
   zipCode: string; 
 } 
 
-interface ICurrentUser {
-  uid: string;
-  displayName: string | null;
-}
-
 interface IWeatherSpecs {
   icon: string;
   description: string;
@@ -46,6 +41,10 @@ export interface IContextProps {
   setCurrentWeather: React.Dispatch<React.SetStateAction<ICurrentWeather | null>>;
   loggedOut: boolean;
   setLoggedOut: React.Dispatch<React.SetStateAction<boolean>>;
+  currentMessage: string;
+  setCurrentMessage: React.Dispatch<React.SetStateAction<string>>;
+  currentMessageValidation: boolean;
+  setCurrentMessageValidation: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const PracticeFirebaseContext = createContext({} as IContextProps);
@@ -59,6 +58,8 @@ const Provider: FC = ({ children }) => {
   const [ currentUserZipCode, setCurrentUserZipCode ] = useState<string>("");
   const [ currentWeather, setCurrentWeather ] = useState<ICurrentWeather | null>(null);
   const [ loggedOut, setLoggedOut ] = useState<boolean>(false);
+  const [ currentMessage, setCurrentMessage ] = useState<string>("");
+  const [ currentMessageValidation, setCurrentMessageValidation ] = useState<boolean>(false);
 
   const createUserDocument = async(userAuth: firebase.User | null, additionalData: IAdditionalData):Promise<void> => {
     if (!userAuth) return;
@@ -154,7 +155,11 @@ const Provider: FC = ({ children }) => {
       currentWeather,
       setCurrentWeather,
       loggedOut,
-      setLoggedOut
+      setLoggedOut,
+      currentMessage, 
+      setCurrentMessage,
+      currentMessageValidation, 
+      setCurrentMessageValidation
     }}>
       { children }
     </PracticeFirebaseContext.Provider>

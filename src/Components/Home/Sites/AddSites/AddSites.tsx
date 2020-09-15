@@ -5,10 +5,19 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import InputGroup from 'react-bootstrap/InputGroup';
+import MainModal from '../../../MainModal/MainModal';
 
 const AddSites: FC = () => {
   const [ site, setSite ] = useState<string>("");
-  const { currentUserId, currentUserSites, setCurrentUserSites } = useContext<IContextProps>(PracticeFirebaseContext);
+  const { 
+    currentUserId, 
+    currentUserSites,
+    setCurrentUserSites,
+    currentMessage,
+    setCurrentMessage,
+    currentMessageValidation,
+    setCurrentMessageValidation
+  } = useContext<IContextProps>(PracticeFirebaseContext);
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>):void => {
     setSite(event.currentTarget.value);
@@ -17,7 +26,8 @@ const AddSites: FC = () => {
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>):Promise<void> => {
     event.preventDefault();
     if (!site) {
-      alert("Empty field is not valid");
+      setCurrentMessage("Empty field is not valid");
+      setCurrentMessageValidation(true);
       return;
     }
     try {
@@ -26,7 +36,8 @@ const AddSites: FC = () => {
       const something = currentUserSites.filter(s => s !== site);
 
       if (something.length !== currentUserSites.length) {
-        alert("This site already exists in your list, try another website");
+        setCurrentMessage("This site already exists in your list, try another website");
+        setCurrentMessageValidation(true);
         return;
       }
 
@@ -43,6 +54,15 @@ const AddSites: FC = () => {
 
   return (
     <Container className="w-75 my-4">
+
+      <MainModal
+        currentMessageValidation={ currentMessageValidation }
+        setCurrentMessageValidation={ setCurrentMessageValidation }
+        titleMessage="Error adding site"
+      >
+        <p>{ currentMessage }</p>
+      </MainModal>
+
       <h3 className="text-center">Add websites</h3>
       <Form onSubmit={ handleSubmit }>
         <InputGroup>

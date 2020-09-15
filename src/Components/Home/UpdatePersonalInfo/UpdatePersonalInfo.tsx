@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import { Redirect } from 'react-router-dom';
+import MainModal from '../../MainModal/MainModal';
 
 const UpdatePersonalInfo: FC = () => {
 
@@ -16,6 +17,10 @@ const UpdatePersonalInfo: FC = () => {
     currentUserZipCode, 
     setCurrentUserZipCode,
     setCurrentWeather,
+    currentMessage,
+    setCurrentMessage,
+    currentMessageValidation,
+    setCurrentMessageValidation
   } = useContext<IContextProps>(PracticeFirebaseContext);
   
   const [ tempUserName, setTempUserName ] = useState<string>("");
@@ -48,7 +53,8 @@ const UpdatePersonalInfo: FC = () => {
         });
         setCurrentUserZipCode(updatedZipCode);
       } else {
-        alert(`Your input is invalid.\nEnter a valid zip code or leave blank to not update (only if current zip code is already valid)`);
+        setCurrentMessage(`Your input is invalid.\nEnter a valid zip code or leave blank to not update (only if current zip code is already valid)`)
+        setCurrentMessageValidation(true);
         return;
       }
       setCurrentUserName(updatedUserName);
@@ -62,6 +68,13 @@ const UpdatePersonalInfo: FC = () => {
 
   return (
     <>
+      <MainModal 
+        currentMessageValidation={ currentMessageValidation } 
+        setCurrentMessageValidation={ setCurrentMessageValidation }
+        titleMessage="Error updating"
+      >
+        <p>{ currentMessage }</p>
+      </MainModal>
       {
         updating 
         ?

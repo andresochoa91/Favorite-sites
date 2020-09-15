@@ -1,15 +1,24 @@
-import React, { useState, FC } from 'react';
+import React, { useState, useContext, FC } from 'react';
+import { PracticeFirebaseContext, IContextProps } from '../../../Context'
 import { auth, signInWithGoogle } from '../../../Firebase/Firebase.utils';
 import ForgotPassword from '../ForgotPassword/ForgotPassword';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import MainModal from '../../MainModal/MainModal';
 
 const SignIn: FC = () => {
+
+  const {
+    currentMessage,
+    setCurrentMessage,
+    currentMessageValidation,
+    setCurrentMessageValidation
+  } = useContext<IContextProps>(PracticeFirebaseContext)
+
   const [ email, setEmail ] = useState<string>("");
   const [ password, setPassword ] = useState<string>("");
   const [ validated, setValidated ] = useState<boolean>(false);
-
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>):void => {
     const { name, value } = event.currentTarget;
@@ -28,12 +37,22 @@ const SignIn: FC = () => {
         await auth.signInWithEmailAndPassword(email, password);
       }
     } catch (error) {
-      alert(error);
+      setCurrentMessage(error.message);
+      setCurrentMessageValidation(true);
     }
   };
 
   return (
     <div className="mt-4">
+
+      <MainModal 
+        currentMessageValidation={ currentMessageValidation } 
+        setCurrentMessageValidation={ setCurrentMessageValidation }
+        titleMessage="Error signin in"
+      >
+        <p>{ currentMessage }</p>
+      </MainModal>
+
       <h2>Sign In</h2>
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Form.Group className="mx-auto" as={Col} md="10" controlId="validationCustom02">

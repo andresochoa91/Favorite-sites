@@ -2,6 +2,7 @@ import React, { FC, useState, useContext } from 'react';
 import { firestore } from '../../../../Firebase/Firebase.utils';
 import { PracticeFirebaseContext, IContextProps } from '../../../../Context';
 import Button from 'react-bootstrap/Button';
+import MainModal from '../../../MainModal/MainModal';
 
 interface IProps {
   index: number;
@@ -14,11 +15,15 @@ const ShowSite: FC<IProps> = ({ index, site, handleDeleteButton }) => {
   const { 
     currentUserId,
     setCurrentUserSites,
-    currentUserSites
+    currentUserSites,
+    currentMessage,
+    setCurrentMessage,
+    currentMessageValidation,
+    setCurrentMessageValidation
   } = useContext<IContextProps>(PracticeFirebaseContext);
   
   const [ edit, setEdit ] = useState<boolean>(false);
-  const [ tempSite, setTempSite ] = useState<string>(site);  
+  const [ tempSite, setTempSite ] = useState<string>(site); 
 
   const handleEditButton = ():void => {
     setEdit(true);
@@ -32,7 +37,8 @@ const ShowSite: FC<IProps> = ({ index, site, handleDeleteButton }) => {
     event.preventDefault();
     try {
       if (!tempSite) {
-        alert("Empty field is not valid");
+        setCurrentMessage("Empty field is not valid");
+        setCurrentMessageValidation(true);
         return;
       }
 
@@ -44,7 +50,8 @@ const ShowSite: FC<IProps> = ({ index, site, handleDeleteButton }) => {
       }, 0);
 
       if (count > 0) {
-          alert("This site already exists in your list, try another website")
+          setCurrentMessage("This site already exists in your list, try another website");
+          setCurrentMessageValidation(true);
           return;
       }
 
@@ -70,6 +77,13 @@ const ShowSite: FC<IProps> = ({ index, site, handleDeleteButton }) => {
 
   return (
     <>
+      <MainModal 
+        currentMessageValidation={ currentMessageValidation } 
+        setCurrentMessageValidation={ setCurrentMessageValidation }
+        titleMessage="Error updating site"
+      >
+        <p>{ currentMessage }</p>
+      </MainModal>
       {
         edit 
         ?
