@@ -17,7 +17,11 @@ const MainModal: SFC<IProps> = (
   }
 ) => {
 
-  const { currentMessageValidation, setCurrentMessageValidation } = useContext<IContextProps>(PracticeFirebaseContext);
+  const { 
+    currentMessageValidation,
+    setCurrentMessageValidation 
+  } = useContext<IContextProps>(PracticeFirebaseContext);
+  
   const handleClose = () => setCurrentMessageValidation(false);
 
   return(
