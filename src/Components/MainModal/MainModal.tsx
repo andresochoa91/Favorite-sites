@@ -10,13 +10,7 @@ interface IProps {
   titleMessage: string;
 }
 
-const MainModal: SFC<IProps> = (
-  {  
-    titleMessage,
-    children 
-  }
-) => {
-
+const MainModal: SFC<IProps> = ({ titleMessage, children }) => {
   const { 
     currentMessageValidation,
     setCurrentMessageValidation 
